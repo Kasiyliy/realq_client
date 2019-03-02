@@ -1,0 +1,43 @@
+<div class="grid-container">
+  <h1 class="mat-h1">Jobs</h1>
+
+  <mat-grid-list cols="2">
+    <mat-grid-tile style="height: fit-content">
+      <mat-card class="dashboard-card"  style="height: fit-content;">
+        <mat-card-header>
+          <mat-card-title>
+            Kasya
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <div>
+            <form class="form-container">
+              <mat-form-field appearance="standard">
+                <input matInput placeholder = "Name">
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-hint>Sample Hint</mat-hint>
+              </mat-form-field>
+            </form>
+            <button class="btn btn-primary" (click) ="uploadValue()">Upload</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile  style="height: fit-content;">
+      <mat-card class="dashboard-card" style="height: fit-content;">
+        <mat-card-header>
+          <mat-card-title>
+            Kasya
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+
+            <app-job></app-job>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
