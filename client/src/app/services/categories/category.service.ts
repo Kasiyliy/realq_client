@@ -9,24 +9,21 @@ import {Observable} from 'rxjs';
 })
 export class CategoryService {
 
-  private add = 'api/categories';
-  private all = 'api/categories';
-
 
   constructor(private http: HttpClient) {
 
   }
 
   public save(category: Categories) {
-    return this.http.post<Categories>(environment.apiUrl + this.add, category);
+    return this.http.post<Categories>(environment.apiUrl + 'api/categories', category);
   }
 
   public getAll(): Observable<Categories[]> {
-    return this.http.get<Categories[]>(environment.apiUrl + this.all);
+    return this.http.get<Categories[]>(environment.apiUrl + 'api/categories');
   }
 
   public getById(id: number): Observable<Categories> {
-    return this.http.get<Categories>(environment.apiUrl + this.all + `/${id}`);
+    return this.http.get<Categories>(environment.apiUrl + `api/categories/${id}`);
   }
 
   public delete(category: Categories) {

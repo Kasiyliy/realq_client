@@ -14,11 +14,11 @@ export class JobService {
   }
 
   public getAll(): Observable<Jobs[]> {
-    return this.http.get<Jobs[]>(environment.apiUrl + '/api/jobs');
+    return this.http.get<Jobs[]>(environment.apiUrl + 'api/jobs');
   }
 
   public getById(id: number): Observable<Jobs> {
-    return this.http.get<Jobs>(environment.apiUrl + 'api/jobs' + `/${id}`);
+    return this.http.get<Jobs>(environment.apiUrl + `api/jobs/${id}`);
   }
 
   public save(job: Jobs) {

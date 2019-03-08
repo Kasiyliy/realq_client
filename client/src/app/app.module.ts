@@ -16,7 +16,7 @@ import {
   MatCardModule,
   MatMenuModule, MatTableModule, MatPaginatorModule, MatSortModule, MAT_LABEL_GLOBAL_OPTIONS,
   MatInputModule,
-  MatSelectModule, MatDialogModule
+  MatSelectModule, MatDialogModule, MatChipsModule
 } from '@angular/material';
 import {NavComponent} from './components/nav/nav.component';
 import {LayoutModule} from '@angular/cdk/layout';
@@ -27,6 +27,8 @@ import {CategoriesComponent} from './components/categories/categories.component'
 import {CategoryEditComponent} from './components/categories/category-edit/category-edit.component';
 import {ToastrModule} from 'ngx-toastr';
 import {JobEditComponent} from './components/jobs/job-edit/job-edit.component';
+import {WorkersComponent} from './components/workers/workers.component';
+import {WorkerEditComponent} from './components/workers/worker-edit/worker-edit.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import {JobEditComponent} from './components/jobs/job-edit/job-edit.component';
     JobsComponent,
     CategoriesComponent,
     CategoryEditComponent,
-    JobEditComponent
+    JobEditComponent,
+    WorkersComponent,
+    WorkerEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +65,7 @@ import {JobEditComponent} from './components/jobs/job-edit/job-edit.component';
     MatSelectModule,
     ReactiveFormsModule,
     MatDialogModule,
+    MatChipsModule,
     ToastrModule.forRoot({
       timeOut: 1500,
       closeButton: true,
@@ -69,7 +74,7 @@ import {JobEditComponent} from './components/jobs/job-edit/job-edit.component';
       progressBar: true
     })
   ],
-  entryComponents: [CategoryEditComponent, JobEditComponent],
+  entryComponents: [CategoryEditComponent, JobEditComponent, WorkerEditComponent],
   providers: [
     HttpClient,
     {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}}

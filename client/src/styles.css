@@ -37,3 +37,7 @@
 .text-white {
   color: white;
 }
+
+.flex {
+  display: flex;
+}

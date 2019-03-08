@@ -38,6 +38,10 @@ export class JobEditComponent implements OnInit {
 
 
   onNoClick(): void {
+    this.jobService.getById(this.job.id).toPromise().then(perf => {
+      this.job.name = perf.name;
+      this.job.category = perf.category;
+    });
     this.dialogRef.close();
   }
 

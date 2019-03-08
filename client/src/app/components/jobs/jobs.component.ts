@@ -45,18 +45,28 @@ export class JobsComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.getAll();
+
+    this.jobForm = this.builder.group({
+      name: [null, Validators.required],
+      category: [null, Validators.required]
+    });
+  }
+
+  public getAll() {
     this.categoryService.getAll().subscribe(resp => {
       this.categories = resp;
+    }, error => {
+      this.toastrService.error('Error happened! Report to administrator!');
+      console.log(error);
     });
 
     this.jobService.getAll().subscribe(resp => {
       this.jobs = resp;
       this.dataSource = new MatTableDataSource<Jobs>(resp);
-    });
-
-    this.jobForm = this.builder.group({
-      name: [null, Validators.required],
-      category: [null, Validators.required]
+    }, error => {
+      this.toastrService.error('Error happened! Report to administrator!');
+      console.log(error);
     });
   }
 

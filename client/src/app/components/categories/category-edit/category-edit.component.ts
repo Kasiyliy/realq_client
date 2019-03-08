@@ -26,6 +26,9 @@ export class CategoryEditComponent implements OnInit {
   }
 
   onNoClick(): void {
+    this.categoryService.getById(this.category.id).toPromise().then(perf => {
+      this.category.name = perf.name;
+    });
     this.dialogRef.close();
   }
 

@@ -1,0 +1,28 @@
+<div style="width: 100%" [formGroup]="workerEditForm" >
+  <h1 mat-dialog-title style="width: 100%; text-align: center">Edit worker</h1>
+  <div mat-dialog-content>
+    <mat-form-field class="full">
+      <input matInput [value]="worker.name"   placeholder="Name" formControlName="name"  >
+    </mat-form-field>
+
+    <mat-form-field class="full">
+      <input matInput [value]="worker.login"  placeholder="Login" formControlName="login">
+    </mat-form-field>
+
+    <mat-form-field class="full">
+      <input matInput [value]="worker.password"  placeholder="Password" type="password" formControlName="password">
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-select placeholder="Jobs" formControlName="jobs" multiple [(ngModel)]="worker.jobs" [compareWith]="compareWithFunc">
+        <mat-option *ngFor="let job of jobs" [value]="job">{{job.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions class="float-right">
+    <button mat-button class="default" (click)="onNoClick()">Cancel</button>
+    <button mat-button class="success text-white" [disabled]="!workerEditForm.valid"  (click)="update()"
+            [ngClass]="{'disabled' : !workerEditForm.valid}">Edit</button>
+  </div>
+</div>

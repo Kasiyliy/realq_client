@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {JobsComponent} from './components/jobs/jobs.component';
 import {CategoriesComponent} from './components/categories/categories.component';
+import {WorkersComponent} from './components/workers/workers.component';
 
 const routes: Routes = [
     {
@@ -11,6 +12,10 @@ const routes: Routes = [
     {
       path: 'categories',
       component: CategoriesComponent
+    },
+    {
+      path: 'workers',
+      component: WorkersComponent
     },
   ]
 ;
