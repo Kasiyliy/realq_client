@@ -1,2 +1,39 @@
+
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.container > * {
+  margin: 1%;
+}
+.full {
+  width: 100%;
+}
+
+.float-right {
+  float: right;
+}
+.mat-h1 {
+  text-align: center;
+}
+
+.danger {
+  background-color: rgb(255, 60, 60);
+  color: white;
+}
+
+.success {
+  background-color: rgb(0, 198, 0);
+}
+
+.default {
+  background-color: rgb(200, 200, 200);
+}
+
+.text-white {
+  color: white;
+}

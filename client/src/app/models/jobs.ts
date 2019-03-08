@@ -1,4 +1,7 @@
+import {Categories} from './categories';
+
 export class Jobs {
-  name: string;
   id: number;
+  name: string;
+  category: Categories;
 }

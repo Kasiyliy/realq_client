@@ -1,43 +1,55 @@
 <div class="grid-container">
   <h1 class="mat-h1">Jobs</h1>
+  <div class="container">
+    <form [formGroup]="jobForm" class="container">
 
-  <mat-grid-list cols="2">
-    <mat-grid-tile style="height: fit-content">
-      <mat-card class="dashboard-card"  style="height: fit-content;">
-        <mat-card-header>
-          <mat-card-title>
-            Kasya
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <div>
-            <form class="form-container">
-              <mat-form-field appearance="standard">
-                <input matInput placeholder = "Name">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Sample Hint</mat-hint>
-              </mat-form-field>
-            </form>
-            <button class="btn btn-primary" (click) ="uploadValue()">Upload</button>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
+      <mat-form-field>
+        <input matInput placeholder="Name" formControlName="name">
+      </mat-form-field>
 
+      <mat-form-field>
+        <mat-select placeholder="Select" formControlName="category">
+          <mat-option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button [disabled]="!jobForm.valid" (click)="save()"
+              [ngClass]="{'disabled' : !jobForm.valid}"
+              mat-flat-button color="primary">
+        Save
+      </button>
+    </form>
 
-    <mat-grid-tile  style="height: fit-content;">
-      <mat-card class="dashboard-card" style="height: fit-content;">
-        <mat-card-header>
-          <mat-card-title>
-            Kasya
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
+    <table mat-table [dataSource]="dataSource" class="container">
 
-            <app-job></app-job>
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> id</mat-header-cell>
+        <mat-cell *matCellDef="let job"> {{job.id}} </mat-cell>
+      </ng-container>
 
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+        <mat-cell *matCellDef="let job"> {{job.name}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef> Category</mat-header-cell>
+        <mat-cell *matCellDef="let job"> {{job.category.name}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
+        <mat-cell *matCellDef="let job">
+          <button mat-flat-button class="danger"  (click)="delete(job)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-flat-button color="primary" (click)="openDialog(job)" style="margin: 4px;">
+            <mat-icon>sync</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </table>
+  </div>
 </div>

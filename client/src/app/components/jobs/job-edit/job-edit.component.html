@@ -1,0 +1,19 @@
+<div style="width: 100%" [formGroup]="jobEditForm" >
+    <h1 mat-dialog-title style="width: 100%; text-align: center">Edit category</h1>
+    <div mat-dialog-content>
+      <mat-form-field class="full">
+        <input matInput [value]="job.name" formControlName="name"  >
+      </mat-form-field>
+
+    <mat-form-field class="full">
+      <mat-select placeholder="Select" formControlName="category" [(ngModel)]="job.category.id">
+        <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions class="float-right">
+    <button mat-button class="default" (click)="onNoClick()">Cancel</button>
+    <button mat-button class="success text-white" [disabled]="!jobEditForm.valid"  (click)="update()"
+            [ngClass]="{'disabled' : !jobEditForm.valid}">Edit</button>
+  </div>
+</div>

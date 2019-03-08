@@ -1,0 +1,13 @@
+
+  <h1 mat-dialog-title>Edit category</h1>
+  <div mat-dialog-content>
+    <mat-form-field [formGroup]="categoryEditForm" class="full">
+      <input matInput [value]="category.name" formControlName="name">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions class="float-right">
+    <button mat-button class="default" (click)="onNoClick()">Cancel</button>
+    <button class="success text-white" mat-button [disabled]="!categoryEditForm.valid"  (click)="update()"
+            [ngClass]="{'disabled' : !categoryEditForm.valid}">Edit</button>
+  </div>
+
