@@ -3,6 +3,7 @@ import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Jobs} from '../../models/jobs';
+import {Categories} from '../../models/categories';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,10 @@ export class JobService {
 
   public getAll(): Observable<Jobs[]> {
     return this.http.get<Jobs[]>(environment.apiUrl + 'api/jobs');
+  }
+
+  public getAllBy(category: Categories): Observable<Jobs[]> {
+    return this.http.get<Jobs[]>(environment.apiUrl + 'api/jobs', {params: { categoryId : `${category.id}`}});
   }
 
   public getById(id: number): Observable<Jobs> {

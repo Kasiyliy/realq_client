@@ -48,7 +48,7 @@
 
       <ng-container matColumnDef="jobs">
         <mat-header-cell *matHeaderCellDef>Jobs</mat-header-cell>
-        <mat-cell *matCellDef="let worker">
+        <mat-cell *matCellDef="let worker" style="margin: 5px;">
           <mat-chip-list >
             <mat-chip *ngFor="let job of worker.jobs"> {{job.name}} </mat-chip>
           </mat-chip-list>

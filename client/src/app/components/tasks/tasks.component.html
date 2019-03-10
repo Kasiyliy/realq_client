@@ -1,0 +1,68 @@
+<mat-horizontal-stepper [linear]="true" class="container">
+  <mat-step [stepControl]="jobSelectForm">
+
+    <form [formGroup]="jobSelectForm">
+      <ng-template matStepLabel>Check</ng-template>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Choose category</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="container">
+
+          <mat-form-field class="full">
+            <mat-select placeholder="Select category" formControlName="category"
+                        (selectionChange)="$event.value != null ? getJobsBy(jobSelectForm.get('category').value) : getJobs()">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let category of categories" [value]="category">{{category.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="jobSelectForm.get('category').valid" class="full">
+            <mat-select placeholder="Select job" formControlName="job">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let job of jobs" [value]="job">{{job.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button matStepperNext [disabled]="jobSelectForm.invalid">Next</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+
+  </mat-step>
+  <mat-step [stepControl]="iinSelectForm">
+    <form [formGroup]="iinSelectForm">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <ng-template matStepLabel>Fill out your Individual Identification Number</ng-template>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="container">
+          <mat-form-field class="full">
+            <input matInput placeholder="Individual identification number" formControlName="iin" required>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext [disabled]="iinSelectForm.invalid"
+                  [ngClass]="{'success text-white' : iinSelectForm.valid}"
+                  (click)="submitForm()">Finish
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="iinSelectForm.reset(); jobSelectForm.reset();">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
