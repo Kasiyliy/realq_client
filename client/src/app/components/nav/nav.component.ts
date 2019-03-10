@@ -3,6 +3,8 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {MatSidenavModule} from '@angular/material';
+import {AuthService} from '../../services/auth/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -18,7 +20,10 @@ export class NavComponent implements OnInit {
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver, public authService: AuthService, private router: Router) {
+    if(!authService.authorized.value){
+      this.router.navigateByUrl('auth');
+    }
   }
 
   ngOnInit(): void {

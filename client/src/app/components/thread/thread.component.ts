@@ -4,6 +4,9 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {FormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import $ from 'jquery';
+import {TasksService} from "../../services/tasks/tasks.service";
+import {Tasks} from "../../models/tasks";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-thread',
@@ -14,10 +17,14 @@ export class ThreadComponent implements OnInit {
 
   private serverUrl = `${environment.apiUrl}socket`;
   private stompClient;
-  private sendMessageForm: FormGroup;
+  public sendMessageForm: FormGroup;
   private serverSendUrl = `/app/socket`;
   private serverListenUrl = `/thread/messages`;
-  constructor(private builder: FormBuilder) {
+
+  numbers: number[] = [1, 2, 3, 4, 5, 6];
+  tasks: Tasks[] = [];
+
+  constructor(private builder: FormBuilder, private taskService: TasksService, private toastrService: ToastrService) {
   }
 
   ngOnInit() {
@@ -29,6 +36,7 @@ export class ThreadComponent implements OnInit {
     });
 
     this.initializeWebSocketConnection();
+    this.getAll();
   }
 
   initializeWebSocketConnection() {
@@ -47,7 +55,16 @@ export class ThreadComponent implements OnInit {
     const content = this.sendMessageForm.get('message').value;
     const sender = this.sendMessageForm.get('sender').value;
     this.stompClient.send(this.serverSendUrl, {},
-      JSON.stringify({ sender, content}));
+      JSON.stringify({sender, content}));
+  }
+
+  getAll() {
+    this.taskService.getAllAscWithLimitSix().subscribe(perf => {
+      this.tasks = perf;
+    }, err => {
+      this.toastrService.error('Error occured! Report to system administrator!');
+      console.log(err);
+    });
   }
 
 }

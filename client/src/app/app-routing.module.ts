@@ -4,7 +4,7 @@ import {JobsComponent} from './components/jobs/jobs.component';
 import {CategoriesComponent} from './components/categories/categories.component';
 import {WorkersComponent} from './components/workers/workers.component';
 import {TasksComponent} from './components/tasks/tasks.component';
-import {ThreadComponent} from "./components/thread/thread.component";
+import {ThreadComponent} from './components/thread/thread.component';
 
 const routes: Routes = [
     {
@@ -27,6 +27,15 @@ const routes: Routes = [
       path: 'thread',
       component: ThreadComponent
     },
+    {
+      path: 'auth',
+      loadChildren: './auth/auth.module#AuthModule'
+    },
+    {
+      path: '',
+      redirectTo: '',
+      pathMatch: 'full'
+    }
   ]
 ;
 

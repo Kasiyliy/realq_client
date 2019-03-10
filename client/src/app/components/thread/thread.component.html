@@ -15,7 +15,18 @@
 
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button  [disabled]="sendMessageForm.invalid" (click)="sendMessage()">Next</button>
+      <button mat-button [disabled]="sendMessageForm.invalid" (click)="sendMessage()">Next</button>
     </mat-card-actions>
+  </mat-card>
+
+
+  <mat-card>
+    <mat-card-content>
+      <mat-grid-list cols="2" rowHeight="3:1" gutterSize="30px">
+        <mat-grid-tile style="background-color: grey; color: white;" *ngFor="let task of tasks">
+          {{task.id}} = {{task.iin}} = {{task.job.name}}
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
   </mat-card>
 </form>

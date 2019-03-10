@@ -32,8 +32,11 @@ import {ToastrModule} from 'ngx-toastr';
 import {JobEditComponent} from './components/jobs/job-edit/job-edit.component';
 import {WorkersComponent} from './components/workers/workers.component';
 import {WorkerEditComponent} from './components/workers/worker-edit/worker-edit.component';
-import { TasksComponent } from './components/tasks/tasks.component';
-import { ThreadComponent } from './components/thread/thread.component';
+import {TasksComponent} from './components/tasks/tasks.component';
+import {ThreadComponent} from './components/thread/thread.component';
+import {LoginComponent} from './auth/login/login.component';
+import {MatProgressSpinnerModule} from '@angular/material';
+import {AuthModule} from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -74,6 +77,7 @@ import { ThreadComponent } from './components/thread/thread.component';
     ReactiveFormsModule,
     MatDialogModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
     ToastrModule.forRoot({
       timeOut: 1500,
       closeButton: true,
