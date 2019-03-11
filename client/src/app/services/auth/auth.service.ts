@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 })
 export class AuthService {
 
-  public authorized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public authorized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(private router: Router) {
   }

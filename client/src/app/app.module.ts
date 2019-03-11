@@ -37,6 +37,7 @@ import {ThreadComponent} from './components/thread/thread.component';
 import {LoginComponent} from './auth/login/login.component';
 import {MatProgressSpinnerModule} from '@angular/material';
 import {AuthModule} from './auth/auth.module';
+import { WorkersControlComponent } from './components/workers-control/workers-control.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {AuthModule} from './auth/auth.module';
     WorkersComponent,
     WorkerEditComponent,
     TasksComponent,
-    ThreadComponent
+    ThreadComponent,
+    WorkersControlComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +81,7 @@ import {AuthModule} from './auth/auth.module';
     MatChipsModule,
     MatProgressSpinnerModule,
     ToastrModule.forRoot({
-      timeOut: 1500,
+      timeOut: 3000,
       closeButton: true,
       easing: 'ease-out',
       easeTime: 300,

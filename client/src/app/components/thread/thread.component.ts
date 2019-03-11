@@ -4,9 +4,9 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {FormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import $ from 'jquery';
-import {TasksService} from "../../services/tasks/tasks.service";
-import {Tasks} from "../../models/tasks";
-import {ToastrService} from "ngx-toastr";
+import {TasksService} from '../../services/tasks/tasks.service';
+import {Tasks} from '../../models/tasks';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-thread',
@@ -15,9 +15,10 @@ import {ToastrService} from "ngx-toastr";
 })
 export class ThreadComponent implements OnInit {
 
+  public sendMessageForm: FormGroup;
+
   private serverUrl = `${environment.apiUrl}socket`;
   private stompClient;
-  public sendMessageForm: FormGroup;
   private serverSendUrl = `/app/socket`;
   private serverListenUrl = `/thread/messages`;
 
@@ -45,6 +46,8 @@ export class ThreadComponent implements OnInit {
     this.stompClient.connect({}, (frame) => {
       this.stompClient.subscribe(this.serverListenUrl, (messageOutput) => {
         console.log(messageOutput.body);
+        const message = JSON.parse(messageOutput.body);
+        this.toastrService.info('Message: ' + message.content + '. Come from: ' + message.sender);
       }, err => {
         console.log(err);
       });

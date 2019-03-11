@@ -5,6 +5,7 @@ import {CategoriesComponent} from './components/categories/categories.component'
 import {WorkersComponent} from './components/workers/workers.component';
 import {TasksComponent} from './components/tasks/tasks.component';
 import {ThreadComponent} from './components/thread/thread.component';
+import {WorkersControlComponent} from './components/workers-control/workers-control.component';
 
 const routes: Routes = [
     {
@@ -18,6 +19,10 @@ const routes: Routes = [
     {
       path: 'workers',
       component: WorkersComponent
+    },
+    {
+      path: 'workers/control',
+      component: WorkersControlComponent
     },
     {
       path: 'tasks',
