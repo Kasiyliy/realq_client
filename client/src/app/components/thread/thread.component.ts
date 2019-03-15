@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
@@ -13,12 +13,12 @@ import {ToastrService} from 'ngx-toastr';
   templateUrl: './thread.component.html',
   styleUrls: ['./thread.component.css']
 })
-export class ThreadComponent implements OnInit {
+export class ThreadComponent implements OnInit, OnDestroy {
 
   public sendMessageForm: FormGroup;
 
   private serverUrl = `${environment.apiUrl}socket`;
-  private stompClient;
+  private stompClient: Stomp;
   private serverSendUrl = `/app/socket`;
   private serverListenUrl = `/thread/messages`;
 
@@ -69,5 +69,18 @@ export class ThreadComponent implements OnInit {
       console.log(err);
     });
   }
+
+  ngOnDestroy(): void {
+    this.disconnect();
+  }
+
+  public disconnect() {
+    if (this.stompClient != null) {
+      this.stompClient.ws.close();
+    }
+    console.log('Disconnected');
+    this.toastrService.warning('Disconnected!');
+  }
+
 
 }

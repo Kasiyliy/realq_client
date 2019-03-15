@@ -14,7 +14,7 @@ import {TasksService} from '../../services/tasks/tasks.service';
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css']
 })
-export class TasksComponent implements OnInit {
+export class TasksComponent implements OnInit{
 
   categories: Categories[];
   jobs: Jobs[];
