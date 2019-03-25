@@ -20,7 +20,6 @@ export class WorkersControlComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.socketService.initializeWebSocketConnection();
-
     this.getAll();
   }
 

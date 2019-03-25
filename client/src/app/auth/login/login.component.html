@@ -9,7 +9,7 @@
         <tr>
           <td>
             <mat-form-field class="full">
-              <input matInput placeholder="Username" formControlName="username" name="username" required>
+              <input matInput placeholder="Login" formControlName="login" name="login" required>
             </mat-form-field>
           </td>
         </tr>
@@ -24,6 +24,6 @@
   <mat-card-actions>
     <button  mat-raised-button [disabled]="!authForm.valid"
              [ngClass]="{'disabled' : !authForm.valid}"
-             mat-flat-button color="primary" (click)="authService.login()" color="primary">Login</button >
+             mat-flat-button color="primary" (click)="login()" color="primary">Login</button >
   </mat-card-actions>
 </mat-card>
