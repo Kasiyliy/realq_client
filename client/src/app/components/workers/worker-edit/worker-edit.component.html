@@ -8,12 +8,6 @@
     <mat-form-field class="full">
       <input matInput [value]="worker.login"  placeholder="Login" formControlName="login">
     </mat-form-field>
-
-    <mat-form-field class="full">
-      <input matInput [value]="worker.password"  placeholder="Password" type="password" formControlName="password">
-    </mat-form-field>
-
-
     <mat-form-field>
       <mat-select placeholder="Jobs" formControlName="jobs" multiple [(ngModel)]="worker.jobs" [compareWith]="compareWithFunc">
         <mat-option *ngFor="let job of jobs" [value]="job">{{job.name}}</mat-option>

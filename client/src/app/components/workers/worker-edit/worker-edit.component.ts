@@ -20,14 +20,14 @@ export class WorkerEditComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<WorkerEditComponent>,
               @Inject(MAT_DIALOG_DATA) public worker: Workers, private builder: FormBuilder,
-              private workerService: WorkersService, private jobService: JobService, private toastrService: ToastrService) {
+              private workerService: WorkersService, private jobService: JobService,
+              private toastrService: ToastrService) {
   }
 
   ngOnInit(): void {
 
     this.workerEditForm = this.builder.group({
       name: [null, Validators.required],
-      password: [null, Validators.required],
       login: [null, Validators.required],
       jobs: [null, Validators.required],
     });
@@ -51,7 +51,6 @@ export class WorkerEditComponent implements OnInit {
 
   update() {
     this.worker.name = this.workerEditForm.get('name').value;
-    this.worker.password = this.workerEditForm.get('password').value;
     this.worker.login = this.workerEditForm.get('login').value;
     this.worker.jobs = this.workerEditForm.get('jobs').value;
     this.workerService.update(this.worker).toPromise().then(resp => {
@@ -62,6 +61,7 @@ export class WorkerEditComponent implements OnInit {
       this.toastrService.error('Error happened! Report to administrator!');
     });
   }
+
   compareWithFunc(a, b) {
     return a.id === b.id;
   }
