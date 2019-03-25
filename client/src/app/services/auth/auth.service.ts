@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
@@ -18,8 +18,21 @@ export class AuthService {
 
 
   logout() {
-    this.authorized.next(false);
+    this.removeToken();
     this.router.navigateByUrl('auth');
+  }
+
+  removeToken() {
+    localStorage.removeItem(environment.tokenName);
+  }
+
+  getToken() {
+    return localStorage.getItem(environment.tokenName);
+  }
+
+  checkAvailability(): boolean {
+    const auth = localStorage.getItem(environment.tokenName);
+    return !!auth;
   }
 
   login(login, password) {
@@ -27,7 +40,7 @@ export class AuthService {
     this.http.post(environment.apiUrl + 'login', {login, password}, {responseType: 'text'}).subscribe(
       resp => {
         const token = resp;
-        console.log(token);
+        localStorage.setItem(environment.tokenName, token);
         this.authorized.next(true);
         this.router.navigateByUrl('jobs');
         this.toastService.success('Welcome!');

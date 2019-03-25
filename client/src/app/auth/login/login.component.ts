@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
   authForm: FormGroup;
 
   constructor(private builder: FormBuilder, private authService: AuthService) {
+    this.authService.authorized.next(false);
+    this.authService.removeToken();
   }
 
   ngOnInit() {

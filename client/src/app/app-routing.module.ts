@@ -6,31 +6,40 @@ import {WorkersComponent} from './components/workers/workers.component';
 import {TasksComponent} from './components/tasks/tasks.component';
 import {ThreadComponent} from './components/thread/thread.component';
 import {WorkersControlComponent} from './components/workers-control/workers-control.component';
+import {PageNotFoundComponent} from './components/errors/page-not-found/page-not-found.component';
+import {NavComponent} from './components/nav/nav.component';
+import {AuthGuard} from './guards/auth/auth.guard';
 
 const routes: Routes = [
     {
       path: 'jobs',
-      component: JobsComponent
+      component: JobsComponent,
+      canActivate: [AuthGuard],
     },
     {
       path: 'categories',
-      component: CategoriesComponent
+      component: CategoriesComponent,
+      canActivate: [AuthGuard],
     },
     {
       path: 'workers',
-      component: WorkersComponent
+      component: WorkersComponent,
+      canActivate: [AuthGuard],
     },
     {
       path: 'workers/control',
-      component: WorkersControlComponent
+      component: WorkersControlComponent,
+      canActivate: [AuthGuard],
     },
     {
       path: 'tasks',
-      component: TasksComponent
+      component: TasksComponent,
+      canActivate: [AuthGuard],
     },
     {
       path: 'thread',
-      component: ThreadComponent
+      component: ThreadComponent,
+      canActivate: [AuthGuard],
     },
     {
       path: 'auth',
@@ -38,8 +47,12 @@ const routes: Routes = [
     },
     {
       path: '',
-      redirectTo: '',
+      redirectTo: 'jobs',
       pathMatch: 'full'
+    },
+    {
+      path: '**',
+      component: PageNotFoundComponent
     }
   ]
 ;

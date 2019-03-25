@@ -24,7 +24,7 @@ import {
 import {NavComponent} from './components/nav/nav.component';
 import {LayoutModule} from '@angular/cdk/layout';
 import {JobsComponent} from './components/jobs/jobs.component';
-import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CategoriesComponent} from './components/categories/categories.component';
 import {CategoryEditComponent} from './components/categories/category-edit/category-edit.component';
@@ -38,6 +38,9 @@ import {LoginComponent} from './auth/login/login.component';
 import {MatProgressSpinnerModule} from '@angular/material';
 import {AuthModule} from './auth/auth.module';
 import { WorkersControlComponent } from './components/workers-control/workers-control.component';
+import { PageNotFoundComponent } from './components/errors/page-not-found/page-not-found.component';
+import {ErrorInterceptor} from './interceptors/error';
+import {JwtInterceptor} from './interceptors/jwt';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,8 @@ import { WorkersControlComponent } from './components/workers-control/workers-co
     WorkerEditComponent,
     TasksComponent,
     ThreadComponent,
-    WorkersControlComponent
+    WorkersControlComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +95,9 @@ import { WorkersControlComponent } from './components/workers-control/workers-co
   entryComponents: [CategoryEditComponent, JobEditComponent, WorkerEditComponent],
   providers: [
     HttpClient,
-    {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}}
+    {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

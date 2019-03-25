@@ -21,9 +21,6 @@ export class NavComponent implements OnInit {
     );
 
   constructor(private breakpointObserver: BreakpointObserver, public authService: AuthService, private router: Router) {
-    if(!authService.authorized.value){
-      this.router.navigateByUrl('auth');
-    }
   }
 
   ngOnInit(): void {
