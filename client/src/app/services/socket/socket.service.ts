@@ -1,14 +1,15 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {environment} from '../../../environments/environment';
 import {SocketMessage} from '../../models/socket-message';
 import {ToastrService} from 'ngx-toastr';
+import {OnEventReceived} from './on-event-received';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SocketService {
+export class SocketService implements OnDestroy {
 
   public stompClient: Stomp;
 
@@ -25,14 +26,25 @@ export class SocketService {
       JSON.stringify(socketMessage));
   }
 
-  public initializeWebSocketConnection() {
+  public initializeWebSocketConnection(onEventReceived: OnEventReceived) {
     const ws = new SockJS(this.serverUrl);
     this.stompClient = Stomp.over(ws);
     this.stompClient.connect({}, (frame) => {
       this.stompClient.subscribe(this.serverListenUrl, (messageOutput) => {
-        console.log(messageOutput.body);
         const message = JSON.parse(messageOutput.body);
-        this.toastrService.info('Message: ' + message.content + '. Come from: ' + message.sender);
+        onEventReceived.onEventReceived(message);
+      }, err => {
+        console.log(err);
+      });
+    });
+  }
+
+  public initializeWebSocketConnectionWithoutEventSending() {
+    const ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.over(ws);
+    this.stompClient.connect({}, (frame) => {
+      this.stompClient.subscribe(this.serverListenUrl, (messageOutput) => {
+        const message = JSON.parse(messageOutput.body);
       }, err => {
         console.log(err);
       });
@@ -44,6 +56,10 @@ export class SocketService {
       this.stompClient.ws.close();
     }
     console.log('Disconnected');
+  }
+
+  ngOnDestroy(): void {
+    this.disconnect();
   }
 
 

@@ -23,8 +23,14 @@
   <mat-card>
     <mat-card-content>
       <mat-grid-list cols="2" rowHeight="3:1" gutterSize="30px">
-        <mat-grid-tile style="background-color: grey; color: white;" *ngFor="let task of tasks">
-          {{task.id}} = {{task.iin}} = {{task.job.name}}
+        <mat-grid-tile [ngStyle]="{'background-color' : (!task.worker) ? 'grey' : 'rgb(123,220,123)'} " style="color: white;"  *ngFor="let task of tasks">
+
+          <ng-template [ngIf]="!task.worker">
+            {{task.id}} = {{task.iin}} = {{task.job.name}}
+          </ng-template>
+          <ng-template [ngIf]="task.worker">
+            {{task.id}} = {{task.iin}} = {{task.job.name}} => {{task.worker.login}} : {{task.worker.name}}
+          </ng-template>
         </mat-grid-tile>
       </mat-grid-list>
     </mat-card-content>

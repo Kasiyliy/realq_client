@@ -1,22 +1,24 @@
 <mat-card>
   <mat-card-content>
     <mat-grid-list cols="2" rowHeight="3:1" gutterSize="30px">
-      <mat-grid-tile [ngStyle]="{'background-color' : (worker.task!=null) ? 'rgb(250,123,123)' : 'rgb(123,220,123)'}" style=" color: white;" *ngFor="let worker of workers">
+      <mat-grid-tile
+                     [ngStyle]="{'background-color' : (worker.task!=null) ? 'rgb(250,123,123)' : 'rgb(123,220,123)'}"
+                     style=" color: white;" *ngFor="let worker of workers">
         <table style="text-align: center">
           <tr>
             {{worker.id}} = {{worker.name}}
           </tr>
 
-          <div *ngIf="worker.task!=null; then thenBlock else elseBlock"></div>
-          <ng-template #thenBlock>
+
+          <ng-template [ngIf]="worker.task">
             <tr>
-              <p>Job name : {{worker.task.iin + ' ' +  worker.task.job.name }}</p>
+              <p>Job name : {{worker.task.iin + ' ' + worker.task.job.name }}</p>
             </tr>
             <tr>
               <button mat-flat-button (click)="release(worker)">Release job</button>
             </tr>
           </ng-template>
-          <ng-template #elseBlock>
+          <ng-template [ngIf]="!worker.task">
             <tr>
               <button mat-flat-button (click)="search(worker)">Find job</button>
             </tr>

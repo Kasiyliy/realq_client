@@ -7,13 +7,17 @@ import $ from 'jquery';
 import {TasksService} from '../../services/tasks/tasks.service';
 import {Tasks} from '../../models/tasks';
 import {ToastrService} from 'ngx-toastr';
+import {SocketService} from '../../services/socket/socket.service';
+import {OnEventReceived} from '../../services/socket/on-event-received';
+import {SocketMessage} from '../../models/socket-message';
+import {MessageCode} from '../../models/enums/message-code.enum';
 
 @Component({
   selector: 'app-thread',
   templateUrl: './thread.component.html',
   styleUrls: ['./thread.component.css']
 })
-export class ThreadComponent implements OnInit, OnDestroy {
+export class ThreadComponent implements OnInit, OnEventReceived {
 
   public sendMessageForm: FormGroup;
 
@@ -25,40 +29,64 @@ export class ThreadComponent implements OnInit, OnDestroy {
   numbers: number[] = [1, 2, 3, 4, 5, 6];
   tasks: Tasks[] = [];
 
-  constructor(private builder: FormBuilder, private taskService: TasksService, private toastrService: ToastrService) {
+  constructor(private builder: FormBuilder, private taskService: TasksService, private toastrService: ToastrService,
+              private socketService: SocketService) {
   }
 
   ngOnInit() {
 
+    this.socketService.initializeWebSocketConnection(this);
 
     this.sendMessageForm = this.builder.group({
       message: [null, Validators.required],
       sender: [null, Validators.required],
     });
 
-    this.initializeWebSocketConnection();
     this.getAll();
   }
 
-  initializeWebSocketConnection() {
-    const ws = new SockJS(this.serverUrl);
-    this.stompClient = Stomp.over(ws);
-    this.stompClient.connect({}, (frame) => {
-      this.stompClient.subscribe(this.serverListenUrl, (messageOutput) => {
-        console.log(messageOutput.body);
-        const message = JSON.parse(messageOutput.body);
-        this.toastrService.info('Message: ' + message.content + '. Come from: ' + message.sender);
-      }, err => {
-        console.log(err);
-      });
-    });
+  onEventReceived(socketMessage: SocketMessage): void {
+
+    if (socketMessage.worker !== null) {
+      const msgCode = (socketMessage.messageCode);
+
+      if (msgCode.valueOf() === MessageCode.TASK_TAKEN.valueOf()) {
+        this.tasks.forEach((task) => {
+          if (task.id === socketMessage.worker.task.id) {
+            task.worker = socketMessage.worker;
+          }
+        });
+
+      } else if (msgCode.valueOf() === MessageCode.FINISHED.valueOf()) {
+        this.tasks.forEach((task) => {
+          if (task.id === socketMessage.task.id && socketMessage.task.completed) {
+            this.tasks = this.tasks.filter(t => t.id !== task.id);
+          }
+        });
+
+      } else if (msgCode.valueOf() === MessageCode.TASK_ADDED.valueOf()) {
+        this.tasks.push(socketMessage.addedTask);
+      } else if (msgCode.valueOf() === MessageCode.TASK_ADDED_TASK_TAKEN.valueOf()) {
+        this.tasks.push(socketMessage.addedTask);
+
+        this.tasks.forEach((task) => {
+          if (task.id === socketMessage.worker.task.id) {
+            task.worker = socketMessage.worker;
+          }
+        });
+      }
+    }
+
   }
 
   sendMessage() {
     const content = this.sendMessageForm.get('message').value;
     const sender = this.sendMessageForm.get('sender').value;
-    this.stompClient.send(this.serverSendUrl, {},
-      JSON.stringify({sender, content}));
+    const socketMessage = new SocketMessage();
+    socketMessage.sender = sender;
+    socketMessage.content = content;
+
+    this.socketService.sendMessage(socketMessage);
   }
 
   getAll() {
@@ -69,18 +97,5 @@ export class ThreadComponent implements OnInit, OnDestroy {
       console.log(err);
     });
   }
-
-  ngOnDestroy(): void {
-    this.disconnect();
-  }
-
-  public disconnect() {
-    if (this.stompClient != null) {
-      this.stompClient.ws.close();
-    }
-    console.log('Disconnected');
-    this.toastrService.warning('Disconnected!');
-  }
-
 
 }
