@@ -15,7 +15,7 @@
               <p>Job name : {{worker.task.iin + ' ' + worker.task.job.name }}</p>
             </tr>
             <tr>
-              <button mat-flat-button (click)="release(worker)">Release job</button>
+              <button mat-flat-button (click)="releaseJobThenSearch(worker)">Release job</button>
             </tr>
           </ng-template>
           <ng-template [ngIf]="!worker.task">

@@ -17,10 +17,20 @@ export class TasksService {
     return this.http.get<Tasks[]>(environment.apiUrl + 'api/tasks');
   }
 
+  public getAllNullCompleted(): Observable<any> {
+    return this.http.get<Tasks[]>(environment.apiUrl + 'api/tasks/all');
+  }
+
   public getAllAscWithLimitSix(): Observable<Tasks[]> {
     let params = new HttpParams();
     params = params.append('desc', 'false');
     params = params.append('count', '6');
+    return this.http.get<Tasks[]>(environment.apiUrl + 'api/tasks', {params});
+  }
+
+  public getAllWithoutDesc(): Observable<Tasks[]> {
+    let params = new HttpParams();
+    params = params.append('desc', 'false');
     return this.http.get<Tasks[]>(environment.apiUrl + 'api/tasks', {params});
   }
 

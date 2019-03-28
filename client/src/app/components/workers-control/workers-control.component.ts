@@ -70,6 +70,15 @@ export class WorkersControlComponent implements OnInit, OnDestroy, OnEventReceiv
     });
   }
 
+  releaseJobThenSearch(worker: Workers) {
+    this.release(worker);
+    setTimeout((e) => {
+      if (worker.task === null) {
+        this.search(worker);
+      }
+    }, 2000);
+  }
+
   release(worker: Workers) {
     const socketMessage = new SocketMessage();
     socketMessage.content = 'I am released task' + worker.task.iin;

@@ -26,7 +26,6 @@ export class ThreadComponent implements OnInit, OnEventReceived {
   private serverSendUrl = `/app/socket`;
   private serverListenUrl = `/thread/messages`;
 
-  numbers: number[] = [1, 2, 3, 4, 5, 6];
   tasks: Tasks[] = [];
 
   constructor(private builder: FormBuilder, private taskService: TasksService, private toastrService: ToastrService,
@@ -46,16 +45,16 @@ export class ThreadComponent implements OnInit, OnEventReceived {
   }
 
   onEventReceived(socketMessage: SocketMessage): void {
-
+    const msgCode = (socketMessage.messageCode);
     if (socketMessage.worker !== null) {
-      const msgCode = (socketMessage.messageCode);
-
       if (msgCode.valueOf() === MessageCode.TASK_TAKEN.valueOf()) {
         this.tasks.forEach((task) => {
           if (task.id === socketMessage.worker.task.id) {
             task.worker = socketMessage.worker;
+            this.voice('Ожидающий с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name );
           }
         });
+        console.log('TASK_TAKEN!');
 
       } else if (msgCode.valueOf() === MessageCode.FINISHED.valueOf()) {
         this.tasks.forEach((task) => {
@@ -63,20 +62,34 @@ export class ThreadComponent implements OnInit, OnEventReceived {
             this.tasks = this.tasks.filter(t => t.id !== task.id);
           }
         });
+        console.log('FINISHED!');
 
       } else if (msgCode.valueOf() === MessageCode.TASK_ADDED.valueOf()) {
         this.tasks.push(socketMessage.addedTask);
+        console.log('TASK ADDED!');
       } else if (msgCode.valueOf() === MessageCode.TASK_ADDED_TASK_TAKEN.valueOf()) {
         this.tasks.push(socketMessage.addedTask);
 
         this.tasks.forEach((task) => {
           if (task.id === socketMessage.worker.task.id) {
             task.worker = socketMessage.worker;
+            this.voice('Ожидающий с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name );
           }
         });
+        console.log('TASK_ADDED_TASK_TAKEN!');
+      }
+    } else {
+      if (msgCode.valueOf() === MessageCode.TASK_ADDED.valueOf()) {
+        this.tasks.push(socketMessage.addedTask);
+        console.log('TASK ADDED!');
       }
     }
 
+  }
+
+  voice(text) {
+    const msg = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(msg);
   }
 
   sendMessage() {
@@ -90,8 +103,13 @@ export class ThreadComponent implements OnInit, OnEventReceived {
   }
 
   getAll() {
-    this.taskService.getAllAscWithLimitSix().subscribe(perf => {
-      this.tasks = perf;
+    this.taskService.getAllNullCompleted().subscribe(taskWithWorkers => {
+      taskWithWorkers.forEach(taskWithWorker => {
+        let task = new Tasks();
+        task = taskWithWorker.task;
+        task.worker = taskWithWorker.worker;
+        this.tasks.push(task);
+      });
     }, err => {
       this.toastrService.error('Error occured! Report to system administrator!');
       console.log(err);
