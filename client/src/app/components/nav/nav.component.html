@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" flex layout-fill>
     <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
                  [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
                  [mode]="(isHandset$ | async) ? 'over' : 'side'"
@@ -21,7 +21,7 @@
         </ng-template>
       </mat-nav-list>
     </mat-sidenav>
-    <mat-sidenav-content>
+    <mat-sidenav-content  style="min-height: 100%;">
       <mat-toolbar color="primary">
         <button
           type="button"

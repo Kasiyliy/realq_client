@@ -17,7 +17,7 @@ import {MessageCode} from '../../models/enums/message-code.enum';
   templateUrl: './thread.component.html',
   styleUrls: ['./thread.component.css']
 })
-export class ThreadComponent implements OnInit, OnEventReceived {
+export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
 
   public sendMessageForm: FormGroup;
 
@@ -115,5 +115,10 @@ export class ThreadComponent implements OnInit, OnEventReceived {
       console.log(err);
     });
   }
+
+  ngOnDestroy(): void {
+    this.socketService.disconnect();
+  }
+
 
 }

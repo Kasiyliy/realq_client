@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ToastrService} from 'ngx-toastr';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,7 @@ export class AuthService {
     this.http.post(environment.apiUrl + 'login', {login, password}, {responseType: 'text'}).subscribe(
       resp => {
         const token = resp;
+        const payload = jwt_decode(token);
         localStorage.setItem(environment.tokenName, token);
         this.authorized.next(true);
         this.router.navigateByUrl('jobs');
