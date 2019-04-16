@@ -1,30 +1,34 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
-import * as Stomp from 'stompjs';
-import * as SockJS from 'sockjs-client';
-import $ from 'jquery';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
+  MAT_LABEL_GLOBAL_OPTIONS,
   MatButtonModule,
-  MatCheckboxModule,
-  MatToolbarModule,
-  MatSidenavModule,
-  MatIconModule,
-  MatFormFieldModule,
-  MatListModule,
-  MatGridListModule,
   MatCardModule,
-  MatMenuModule, MatTableModule, MatPaginatorModule, MatSortModule, MAT_LABEL_GLOBAL_OPTIONS,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatGridListModule,
+  MatIconModule,
   MatInputModule,
-  MatSelectModule, MatDialogModule, MatChipsModule, MatStepperModule
+  MatListModule,
+  MatMenuModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
+  MatToolbarModule
 } from '@angular/material';
 import {NavComponent} from './components/nav/nav.component';
 import {LayoutModule} from '@angular/cdk/layout';
 import {JobsComponent} from './components/jobs/jobs.component';
-import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CategoriesComponent} from './components/categories/categories.component';
 import {CategoryEditComponent} from './components/categories/category-edit/category-edit.component';
@@ -34,13 +38,11 @@ import {WorkersComponent} from './components/workers/workers.component';
 import {WorkerEditComponent} from './components/workers/worker-edit/worker-edit.component';
 import {TasksComponent} from './components/tasks/tasks.component';
 import {ThreadComponent} from './components/thread/thread.component';
-import {LoginComponent} from './auth/login/login.component';
-import {MatProgressSpinnerModule} from '@angular/material';
-import {AuthModule} from './auth/auth.module';
-import { WorkersControlComponent } from './components/workers-control/workers-control.component';
-import { PageNotFoundComponent } from './components/errors/page-not-found/page-not-found.component';
+import {WorkersControlComponent} from './components/workers-control/workers-control.component';
+import {PageNotFoundComponent} from './components/errors/page-not-found/page-not-found.component';
 import {ErrorInterceptor} from './interceptors/error';
 import {JwtInterceptor} from './interceptors/jwt';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,7 @@ import {JwtInterceptor} from './interceptors/jwt';
     ThreadComponent,
     WorkersControlComponent,
     PageNotFoundComponent
+
   ],
   imports: [
     BrowserModule,
@@ -84,6 +87,7 @@ import {JwtInterceptor} from './interceptors/jwt';
     MatDialogModule,
     MatChipsModule,
     MatProgressSpinnerModule,
+    CommonModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       closeButton: true,
@@ -92,12 +96,15 @@ import {JwtInterceptor} from './interceptors/jwt';
       progressBar: true
     })
   ],
+  exports: [
+    MatButtonModule,
+  ],
   entryComponents: [CategoryEditComponent, JobEditComponent, WorkerEditComponent],
   providers: [
     HttpClient,
     {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })

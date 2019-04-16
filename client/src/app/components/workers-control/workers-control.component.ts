@@ -62,7 +62,7 @@ export class WorkersControlComponent implements OnInit, OnDestroy, OnEventReceiv
 
 
   getAll() {
-    this.workersService.getAll().subscribe(perf => {
+    this.workersService.getAllManagers().subscribe(perf => {
       this.workers = perf;
     }, err => {
       console.log(err);

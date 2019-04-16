@@ -5,6 +5,7 @@ import {map} from 'rxjs/operators';
 import {MatSidenavModule} from '@angular/material';
 import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
+import {Roles} from '../../models/roles';
 
 @Component({
   selector: 'app-nav',
@@ -19,6 +20,8 @@ export class NavComponent implements OnInit {
     .pipe(
       map(result => result.matches)
     );
+
+  roles = new Roles();
 
   constructor(private breakpointObserver: BreakpointObserver, public authService: AuthService, private router: Router) {
   }

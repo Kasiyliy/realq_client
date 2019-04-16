@@ -3,4 +3,5 @@ export const environment = {
   apiUrl : 'http://localhost:8080/',
   tokenPrefix: 'Bearer ',
   tokenName: 'token',
+  roleName: 'role',
 };

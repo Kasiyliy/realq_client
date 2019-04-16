@@ -8,16 +8,26 @@
 
         <div *ngIf="(this.authService.authorized.value); then  thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
-          <a mat-list-item routerLink="categories">Categories</a>
-          <a mat-list-item routerLink="jobs">Jobs</a>
-          <a mat-list-item routerLink="workers">Workers</a>
-          <a mat-list-item routerLink="workers/control">Workers control</a>
-          <a mat-list-item routerLink="tasks">Tasks</a>
+
+          <div [hidden]="(this.authService.role.value !== roles.ROLE_ADMIN)">
+            <a mat-list-item routerLink="categories">Categories</a>
+            <a mat-list-item routerLink="jobs">Jobs</a>
+            <a mat-list-item routerLink="workers">Workers</a>
+          </div>
+          <div [hidden]="(this.authService.role.value !== roles.ROLE_ADMIN && this.authService.role.value !== roles.ROLE_MANAGER)">
+            <a mat-list-item routerLink="workers/control">Workers control</a>
+          </div>
+
+          <div [hidden]="(this.authService.role.value !== roles.ROLE_ADMIN && this.authService.role.value !== roles.ROLE_GUEST)">
+            <a mat-list-item routerLink="tasks">Tasks</a>
+          </div>
           <a mat-list-item routerLink="thread">Thread</a>
           <a mat-list-item routerLink="auth">Logout</a>
         </ng-template>
         <ng-template #elseBlock>
-          <a mat-list-item>Register</a>
+          <a mat-list-item routerLink="auth">Login</a>
+          <a mat-list-item routerLink="tasks">Tasks</a>
+          <a mat-list-item routerLink="thread">Thread</a>
         </ng-template>
       </mat-nav-list>
     </mat-sidenav>

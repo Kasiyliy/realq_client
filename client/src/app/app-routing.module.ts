@@ -9,22 +9,25 @@ import {WorkersControlComponent} from './components/workers-control/workers-cont
 import {PageNotFoundComponent} from './components/errors/page-not-found/page-not-found.component';
 import {NavComponent} from './components/nav/nav.component';
 import {AuthGuard} from './guards/auth/auth.guard';
+import {AdminGuard} from './guards/roles/admin.guard';
+import {ManagerGuard} from './guards/roles/manager.guard';
+import {GuestGuard} from './guards/roles/guest.guard';
 
 const routes: Routes = [
     {
       path: 'jobs',
       component: JobsComponent,
-      canActivate: [AuthGuard],
+      canActivate: [AuthGuard, AdminGuard],
     },
     {
       path: 'categories',
       component: CategoriesComponent,
-      canActivate: [AuthGuard],
+      canActivate: [AuthGuard, AdminGuard],
     },
     {
       path: 'workers',
       component: WorkersComponent,
-      canActivate: [AuthGuard],
+      canActivate: [AuthGuard, AdminGuard],
     },
     {
       path: 'workers/control',
@@ -34,12 +37,10 @@ const routes: Routes = [
     {
       path: 'tasks',
       component: TasksComponent,
-      canActivate: [AuthGuard],
     },
     {
       path: 'thread',
       component: ThreadComponent,
-      canActivate: [AuthGuard],
     },
     {
       path: 'auth',
@@ -47,7 +48,7 @@ const routes: Routes = [
     },
     {
       path: '',
-      redirectTo: 'jobs',
+      redirectTo: 'thread',
       pathMatch: 'full'
     },
     {

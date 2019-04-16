@@ -16,6 +16,10 @@ export class WorkersService {
     return this.http.get<Workers[]>(environment.apiUrl + 'api/workers');
   }
 
+  public getAllManagers(): Observable<Workers[]> {
+    return this.http.get<Workers[]>(environment.apiUrl + 'api/workers/managers');
+  }
+
   public getById(id: number): Observable<Workers> {
     return this.http.get<Workers>(environment.apiUrl + 'api/workers' + `/${id}`);
   }

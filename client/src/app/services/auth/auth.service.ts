@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ToastrService} from 'ngx-toastr';
 import * as jwt_decode from 'jwt-decode';
+import {Roles} from '../../models/roles';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,14 @@ export class AuthService {
 
 
   public authorized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public role: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(private router: Router, private http: HttpClient, private toastService: ToastrService) {
   }
 
 
   logout() {
-    this.removeToken();
+    this.removeAll();
     this.router.navigateByUrl('auth');
   }
 
@@ -27,8 +29,21 @@ export class AuthService {
     localStorage.removeItem(environment.tokenName);
   }
 
+  removeAll() {
+    this.removeRole();
+    this.removeToken();
+  }
+
+  removeRole() {
+    localStorage.removeItem(environment.roleName);
+  }
+
   getToken() {
     return localStorage.getItem(environment.tokenName);
+  }
+
+  getRole() {
+    return localStorage.getItem(environment.roleName);
   }
 
   checkAvailability(): boolean {
@@ -43,8 +58,10 @@ export class AuthService {
         const token = resp;
         const payload = jwt_decode(token);
         localStorage.setItem(environment.tokenName, token);
+        localStorage.setItem(environment.roleName, payload.scopes.authority);
         this.authorized.next(true);
-        this.router.navigateByUrl('jobs');
+        this.role.next(this.getRole());
+        this.router.navigateByUrl('thread');
         this.toastService.success('Welcome!');
       },
       err => {
