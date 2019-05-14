@@ -1,60 +1,62 @@
 <mat-sidenav-container class="sidenav-container" flex layout-fill>
-    <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
-                 [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-                 [mode]="(isHandset$ | async) ? 'over' : 'side'"
-                 [opened]="!(isHandset$ | async)">
-      <mat-toolbar>{{ 'Menu' | translate}}</mat-toolbar>
-      <mat-nav-list>
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="!(isHandset$ | async)">
+    <mat-toolbar>{{ 'Menu' | translate}}	&nbsp;
+      <button color="primary" mat-flat-button [matMenuTriggerFor]="appMenu">{{ 'Language' | translate}}:{{currentLanguage}} <mat-icon>arrow_drop_down</mat-icon></button>
+      <mat-menu #appMenu="matMenu" xPosition="after">
+        <button mat-menu-item *ngFor="let l of languages" (click)="switchLanguage(l)" [value]="">{{l}}</button>
+      </mat-menu>
+    </mat-toolbar>
 
-        <mat-form-field>
-          <mat-label>{{ 'Language' | translate}}</mat-label>
-          <mat-select class="">
-            <mat-option *ngFor="let l of languages" (click)="switchLanguage(l)" [value]="currentLanguage">
-              {{l}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+    <mat-nav-list>
 
-        <div *ngIf="(this.authService.authorized.value); then  thenBlock else elseBlock"></div>
-        <ng-template #thenBlock>
 
-          <div [hidden]="(this.authService.role.value !== roles.ROLE_ADMIN)">
-            <a mat-list-item routerLink="categories" >{{ 'Categories' | translate}}</a>
-            <a mat-list-item routerLink="jobs">{{ 'Jobs' | translate}}</a>
-            <a mat-list-item routerLink="workers">{{ 'Workers' | translate}}</a>
-          </div>
-          <div [hidden]="(this.authService.role.value !== roles.ROLE_ADMIN && this.authService.role.value !== roles.ROLE_MANAGER)">
-            <a mat-list-item routerLink="workers/control">{{'Workers control' | translate}}</a>
-          </div>
 
-          <div [hidden]="(this.authService.role.value !== roles.ROLE_ADMIN && this.authService.role.value !== roles.ROLE_GUEST)">
-            <a mat-list-item routerLink="tasks">{{'Tasks' | translate}}</a>
-          </div>
-          <a mat-list-item routerLink="thread">{{'Thread' | translate}}</a>
-          <a mat-list-item routerLink="auth">{{'Logout' | translate}}</a>
-        </ng-template>
-        <ng-template #elseBlock>
-          <a mat-list-item routerLink="auth">{{'Login' | translate}}</a>
+
+      <div *ngIf="(this.authService.authorized.value); then  thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+
+        <div [hidden]="(this.authService.role.value !== roles.ROLE_ADMIN)">
+          <a mat-list-item routerLink="categories">{{ 'Categories' | translate}}</a>
+          <a mat-list-item routerLink="jobs">{{ 'Jobs' | translate}}</a>
+          <a mat-list-item routerLink="workers">{{ 'Workers' | translate}}</a>
+        </div>
+        <div
+          [hidden]="(this.authService.role.value !== roles.ROLE_ADMIN && this.authService.role.value !== roles.ROLE_MANAGER)">
+          <a mat-list-item routerLink="workers/control">{{'Workers control' | translate}}</a>
+        </div>
+
+        <div
+          [hidden]="(this.authService.role.value !== roles.ROLE_ADMIN && this.authService.role.value !== roles.ROLE_GUEST)">
           <a mat-list-item routerLink="tasks">{{'Tasks' | translate}}</a>
-          <a mat-list-item routerLink="thread">{{'Thread' | translate}}</a>
-        </ng-template>
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content  style="min-height: 100%;">
-      <mat-toolbar color="primary">
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()"
-          *ngIf="isHandset$ | async">
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-        <span>IITU RealQ</span>
-      </mat-toolbar>
+        </div>
+        <a mat-list-item routerLink="thread">{{'Thread' | translate}}</a>
+        <a mat-list-item routerLink="auth">{{'Logout' | translate}}</a>
+      </ng-template>
+      <ng-template #elseBlock>
+        <a mat-list-item routerLink="auth">{{'Login' | translate}}</a>
+        <a mat-list-item routerLink="tasks">{{'Tasks' | translate}}</a>
+        <a mat-list-item routerLink="thread">{{'Thread' | translate}}</a>
+      </ng-template>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content style="min-height: 100%;">
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>IITU RealQ</span>
+    </mat-toolbar>
 
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
 </mat-sidenav-container>
 
 
