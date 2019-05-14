@@ -10,6 +10,7 @@ import {ToastrService} from 'ngx-toastr';
 import {TasksService} from '../../services/tasks/tasks.service';
 import {WorkersService} from '../../services/workers/workers.service';
 import {WorkerEditComponent} from './worker-edit/worker-edit.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-workers',
@@ -27,10 +28,14 @@ export class WorkersComponent implements OnInit {
   dataSource: MatTableDataSource<Workers>;
   displayedColumns = ['id', 'name', 'login', 'jobs', 'actions'];
 
-  constructor(private breakpointObserver: BreakpointObserver, private builder: FormBuilder,
-              private jobService: JobService, private taskService: TasksService,
-              private toastrService: ToastrService, private dialog: MatDialog,
-              private workerService: WorkersService) {
+  constructor(private breakpointObserver: BreakpointObserver,
+              private builder: FormBuilder,
+              private jobService: JobService,
+              private taskService: TasksService,
+              private toastrService: ToastrService,
+              private dialog: MatDialog,
+              private workerService: WorkersService,
+              private translateService: TranslateService) {
   }
 
   ngOnInit() {
@@ -61,7 +66,12 @@ export class WorkersComponent implements OnInit {
     this.jobService.getAll().subscribe(resp => {
       this.jobs = resp;
     }, error => {
-      this.toastrService.error('Error happened! Report to administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
       console.log(error);
     });
 
@@ -69,7 +79,12 @@ export class WorkersComponent implements OnInit {
       this.workers = resp;
       this.dataSource = new MatTableDataSource<Workers>(resp);
     }, error => {
-      this.toastrService.error('Error happened! Report to administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
       console.log(error);
     });
   }
@@ -83,11 +98,21 @@ export class WorkersComponent implements OnInit {
     worker.task = null;
     this.workerService.save(worker).toPromise().then(resp => {
       this.workers.unshift(resp);
-      this.toastrService.success('Worker saved!');
+
+      this.translateService.get('Element created!')
+        .subscribe(perf => {
+          this.toastrService.success(perf);
+        });
+
       this.dataSource.data = this.workers;
       this.workerForm.reset();
     }, error => {
-      this.toastrService.error('Error happened! Report to administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
       console.log(error);
     });
   }
@@ -97,9 +122,20 @@ export class WorkersComponent implements OnInit {
     this.workerService.delete(worker).toPromise().then(resp => {
       this.workers = this.workers.filter(c => c !== worker);
       this.dataSource.data = this.workers;
-      this.toastrService.success('Worker deleted!');
+
+      this.translateService.get('Element deleted!')
+        .subscribe(perf => {
+          this.toastrService.success(perf);
+        });
+
+
     }, error => {
-      this.toastrService.error('Error happened! Report to administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
       console.log(error);
     });
   }

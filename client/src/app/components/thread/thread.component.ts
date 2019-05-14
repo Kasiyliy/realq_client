@@ -1,9 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import * as Stomp from 'stompjs';
-import * as SockJS from 'sockjs-client';
-import {FormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import $ from 'jquery';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TasksService} from '../../services/tasks/tasks.service';
 import {Tasks} from '../../models/tasks';
 import {ToastrService} from 'ngx-toastr';
@@ -11,6 +9,7 @@ import {SocketService} from '../../services/socket/socket.service';
 import {OnEventReceived} from '../../services/socket/on-event-received';
 import {SocketMessage} from '../../models/socket-message';
 import {MessageCode} from '../../models/enums/message-code.enum';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-thread',
@@ -28,7 +27,10 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
 
   tasks: Tasks[] = [];
 
-  constructor(private builder: FormBuilder, private taskService: TasksService, private toastrService: ToastrService,
+  constructor(private builder: FormBuilder,
+              private taskService: TasksService,
+              private translateService: TranslateService,
+              private toastrService: ToastrService,
               private socketService: SocketService) {
   }
 
@@ -111,7 +113,12 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
         this.tasks.push(task);
       });
     }, err => {
-      this.toastrService.error('Error occured! Report to system administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
       console.log(err);
     });
   }

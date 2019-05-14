@@ -6,6 +6,7 @@ import {environment} from '../../../environments/environment';
 import {ToastrService} from 'ngx-toastr';
 import * as jwt_decode from 'jwt-decode';
 import {Roles} from '../../models/roles';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,12 @@ export class AuthService {
   public authorized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public role: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor(private router: Router, private http: HttpClient, private toastService: ToastrService) {
+  constructor(
+    private toastService: ToastrService,
+    private translate: TranslateService,
+    private http: HttpClient,
+    private router: Router,
+  ) {
   }
 
 
@@ -62,14 +68,15 @@ export class AuthService {
         this.authorized.next(true);
         this.role.next(this.getRole());
         this.router.navigateByUrl('thread');
-        this.toastService.success('Welcome!');
+        this.translate.get('Welcome').subscribe(perf => {
+          this.toastService.success(perf);
+        });
+
       },
       err => {
-        if (err.status === 401) {
-          this.toastService.warning('Invalid login or password!');
-        } else {
-          this.toastService.error('Error occured! Report to system administrator!');
-        }
+        this.translate.get('Invalid login or password!').subscribe(perf => {
+          this.toastService.warning(perf);
+        });
       });
 
   }

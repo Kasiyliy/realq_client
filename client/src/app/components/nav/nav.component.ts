@@ -6,6 +6,7 @@ import {MatSidenavModule} from '@angular/material';
 import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
 import {Roles} from '../../models/roles';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nav',
@@ -15,7 +16,8 @@ import {Roles} from '../../models/roles';
 export class NavComponent implements OnInit {
 
   @ViewChild('sidenav') sidenav: MatSidenavModule;
-
+  languages = ['en', 'kz', 'ru'];
+  currentLanguage;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
@@ -23,11 +25,20 @@ export class NavComponent implements OnInit {
 
   roles = new Roles();
 
-  constructor(private breakpointObserver: BreakpointObserver, public authService: AuthService, private router: Router) {
+  constructor(public authService: AuthService,
+              private breakpointObserver: BreakpointObserver,
+              private translateService: TranslateService,
+              ) {
   }
 
-  ngOnInit(): void {
+  switchLanguage(language: string) {
+    this.currentLanguage = language;
+    this.translateService.use(language);
+  }
 
+
+  ngOnInit(): void {
+    this.currentLanguage = this.translateService.getDefaultLang();
   }
 
 }

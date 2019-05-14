@@ -1,6 +1,4 @@
-
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-
 
 .container {
   display: flex;
@@ -10,6 +8,7 @@
 .container > * {
   margin: 1%;
 }
+
 .full {
   width: 100%;
 }
@@ -17,6 +16,7 @@
 .float-right {
   float: right;
 }
+
 .mat-h1 {
   text-align: center;
 }

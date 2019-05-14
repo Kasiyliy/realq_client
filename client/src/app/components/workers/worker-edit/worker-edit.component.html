@@ -1,22 +1,22 @@
 <div style="width: 100%" [formGroup]="workerEditForm" >
-  <h1 mat-dialog-title style="width: 100%; text-align: center">Edit worker</h1>
+  <h1 mat-dialog-title style="width: 100%; text-align: center">{{'Edit worker' | translate}}</h1>
   <div mat-dialog-content>
     <mat-form-field class="full">
-      <input matInput [value]="worker.name"   placeholder="Name" formControlName="name"  >
+      <input matInput [value]="worker.name"   placeholder="{{'Name' | translate}}" formControlName="name"  >
     </mat-form-field>
 
     <mat-form-field class="full">
-      <input matInput [value]="worker.login"  placeholder="Login" formControlName="login">
+      <input matInput [value]="worker.login"  placeholder="{{'Username' | translate}}" formControlName="login">
     </mat-form-field>
     <mat-form-field>
-      <mat-select placeholder="Jobs" formControlName="jobs" multiple [(ngModel)]="worker.jobs" [compareWith]="compareWithFunc">
+      <mat-select placeholder="{{'Jobs' |translate}}" formControlName="jobs" multiple [(ngModel)]="worker.jobs" [compareWith]="compareWithFunc">
         <mat-option *ngFor="let job of jobs" [value]="job">{{job.name}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div mat-dialog-actions class="float-right">
-    <button mat-button class="default" (click)="onNoClick()">Cancel</button>
+    <button mat-button class="default" (click)="onNoClick()">{{'Cancel' | translate}}</button>
     <button mat-button class="success text-white" [disabled]="!workerEditForm.valid"  (click)="update()"
-            [ngClass]="{'disabled' : !workerEditForm.valid}">Edit</button>
+            [ngClass]="{'disabled' : !workerEditForm.valid}">{{'Edit' | translate}}</button>
   </div>
 </div>

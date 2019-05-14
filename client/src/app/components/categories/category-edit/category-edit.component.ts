@@ -1,10 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Categories} from '../../../models/categories';
-import {MatTableDataSource, MatTableModule, MatDialog} from '@angular/material';
-import {FormGroup, FormBuilder, FormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CategoryService} from '../../../services/categories/category.service';
-import {ToastrService } from 'ngx-toastr';
+import {ToastrService} from 'ngx-toastr';
+import {TranslateService} from '@ngx-translate/core';
+
 @Component({
   selector: 'app-category-edit',
   templateUrl: './category-edit.component.html',
@@ -15,8 +16,11 @@ export class CategoryEditComponent implements OnInit {
   categoryEditForm: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<CategoryEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public category: Categories, private builder: FormBuilder,
-              private categoryService: CategoryService, private toastrService: ToastrService) {
+              @Inject(MAT_DIALOG_DATA) public category: Categories,
+              private translateService: TranslateService,
+              private builder: FormBuilder,
+              private categoryService: CategoryService,
+              private toastrService: ToastrService) {
   }
 
   ngOnInit() {
@@ -36,10 +40,16 @@ export class CategoryEditComponent implements OnInit {
     this.category.name = this.categoryEditForm.get('name').value;
     this.categoryService.update(this.category).toPromise().then(resp => {
       this.dialogRef.close();
-      this.toastrService.success('Category updated!');
+      this.translateService.get('Element updated!')
+        .subscribe(perf => {
+          this.toastrService.success(perf);
+        });
     }, error => {
       console.log(error);
-      this.toastrService.error('Error happened! Report to administrator!');
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
     });
   }
 }

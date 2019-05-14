@@ -8,6 +8,7 @@ import {Jobs} from '../../models/jobs';
 import {ToastrService} from 'ngx-toastr';
 import {MatTableDataSource, MatTableModule, MatDialog} from '@angular/material';
 import {JobEditComponent} from './job-edit/job-edit.component';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-jobs',
@@ -26,9 +27,13 @@ export class JobsComponent implements OnInit {
   dataSource: MatTableDataSource<Jobs>;
   displayedColumns = ['id', 'name', 'category', 'actions'];
 
-  constructor(private breakpointObserver: BreakpointObserver, private builder: FormBuilder,
-              private jobService: JobService, private categoryService: CategoryService,
-              private toastrService: ToastrService, private dialog: MatDialog) {
+  constructor(private breakpointObserver: BreakpointObserver,
+              private builder: FormBuilder,
+              private jobService: JobService,
+              private translateService: TranslateService,
+              private categoryService: CategoryService,
+              private toastrService: ToastrService,
+              private dialog: MatDialog) {
 
   }
 
@@ -57,7 +62,10 @@ export class JobsComponent implements OnInit {
     this.categoryService.getAll().subscribe(resp => {
       this.categories = resp;
     }, error => {
-      this.toastrService.error('Error happened! Report to administrator!');
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
       console.log(error);
     });
 
@@ -65,7 +73,12 @@ export class JobsComponent implements OnInit {
       this.jobs = resp;
       this.dataSource = new MatTableDataSource<Jobs>(resp);
     }, error => {
-      this.toastrService.error('Error happened! Report to administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
       console.log(error);
     });
   }
@@ -76,12 +89,21 @@ export class JobsComponent implements OnInit {
     job.category = this.categories.find(c => c.id === parseInt(this.jobForm.get('category').value, 10));
     this.jobService.save(job).toPromise().then(resp => {
       this.jobs.unshift(resp);
-      this.toastrService.success('Job created!');
+
+      this.translateService.get('Element created!')
+        .subscribe(perf => {
+          this.toastrService.success(perf);
+        });
+
       this.dataSource.data = this.jobs;
       this.jobForm.reset();
     }, error => {
       console.log(error);
-      this.toastrService.error('Error! Please report to system administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
     });
 
   }
@@ -90,9 +112,19 @@ export class JobsComponent implements OnInit {
     this.jobService.delete(job).toPromise().then(resp => {
       this.jobs = this.jobs.filter(c => c !== job);
       this.dataSource.data = this.jobs;
-      this.toastrService.success('Job deleted!');
+
+      this.translateService.get('Element deleted!')
+        .subscribe(perf => {
+          this.toastrService.success(perf);
+        });
+
     }, error => {
-      this.toastrService.error('Error happened! Report to administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
       console.log(error);
     });
   }

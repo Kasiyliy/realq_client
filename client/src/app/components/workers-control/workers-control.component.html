@@ -12,15 +12,15 @@
 
           <ng-template [ngIf]="worker.task">
             <tr>
-              <p>Job name : {{worker.task.iin + ' ' + worker.task.job.name }}</p>
+              <p>{{'Job name' | translate}} : {{worker.task.iin + ' ' + worker.task.job.name }}</p>
             </tr>
             <tr>
-              <button mat-flat-button (click)="releaseJobThenSearch(worker)">Release job</button>
+              <button mat-flat-button (click)="releaseJobThenSearch(worker)">{{'Release job' | translate}}</button>
             </tr>
           </ng-template>
           <ng-template [ngIf]="!worker.task">
             <tr>
-              <button mat-flat-button (click)="search(worker)">Find job</button>
+              <button mat-flat-button (click)="search(worker)">{{'Find job' | translate}}</button>
             </tr>
           </ng-template>
 

@@ -3,10 +3,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Categories} from '../../../models/categories';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Workers} from '../../../models/workers';
-import {CategoryService} from '../../../services/categories/category.service';
 import {ToastrService} from 'ngx-toastr';
 import {WorkersService} from '../../../services/workers/workers.service';
 import {JobService} from '../../../services/jobs/job.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-worker-edit',
@@ -19,9 +19,13 @@ export class WorkerEditComponent implements OnInit {
   jobs: Categories[];
 
   constructor(public dialogRef: MatDialogRef<WorkerEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public worker: Workers, private builder: FormBuilder,
-              private workerService: WorkersService, private jobService: JobService,
-              private toastrService: ToastrService) {
+              @Inject(MAT_DIALOG_DATA) public worker: Workers,
+              private builder: FormBuilder,
+              private workerService: WorkersService,
+              private jobService: JobService,
+              private toastrService: ToastrService,
+              private translateService: TranslateService,
+              ) {
   }
 
   ngOnInit(): void {
@@ -55,10 +59,17 @@ export class WorkerEditComponent implements OnInit {
     this.worker.jobs = this.workerEditForm.get('jobs').value;
     this.workerService.update(this.worker).toPromise().then(resp => {
       this.dialogRef.close();
-      this.toastrService.success('Worker updated!');
+      this.translateService.get('Element updated!')
+        .subscribe(perf => {
+          this.toastrService.success(perf);
+        });
     }, error => {
       console.log(error);
-      this.toastrService.error('Error happened! Report to administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
     });
   }
 

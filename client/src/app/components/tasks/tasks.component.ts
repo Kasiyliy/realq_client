@@ -10,6 +10,7 @@ import {TasksService} from '../../services/tasks/tasks.service';
 import {SocketService} from '../../services/socket/socket.service';
 import {SocketMessage} from '../../models/socket-message';
 import {MessageCode} from '../../models/enums/message-code.enum';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tasks',
@@ -21,9 +22,13 @@ export class TasksComponent implements OnInit, OnDestroy {
   categories: Categories[];
   jobs: Jobs[];
 
-  constructor(private builder: FormBuilder, private categoryService: CategoryService,
-              private toastrService: ToastrService, private jobService: JobService,
-              private taskService: TasksService, private socketService: SocketService) {
+  constructor(private builder: FormBuilder,
+              private categoryService: CategoryService,
+              private translateService: TranslateService,
+              private toastrService: ToastrService,
+              private jobService: JobService,
+              private taskService: TasksService,
+              private socketService: SocketService) {
   }
 
   iinSelectForm: FormGroup;
@@ -42,7 +47,12 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.categoryService.getAll().subscribe(resp => {
       this.categories = resp;
     }, err => {
-      this.toastrService.error('Error occured! Report to site administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
     });
 
     this.socketService.initializeWebSocketConnectionWithoutEventSending();
@@ -52,7 +62,12 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.jobService.getAllBy(category).subscribe(resp => {
       this.jobs = resp;
     }, err => {
-      this.toastrService.error('Error occured! Report to system administrator');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
     });
   }
 
@@ -60,7 +75,12 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.jobService.getAll().subscribe(resp => {
       this.jobs = resp;
     }, err => {
-      this.toastrService.error('Error occured! Report to system administrator');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
     });
   }
 
@@ -70,7 +90,14 @@ export class TasksComponent implements OnInit, OnDestroy {
       task.iin = this.iinSelectForm.get('iin').value;
       task.job = this.jobSelectForm.get('job').value;
       this.taskService.save(task).subscribe(resp => {
-        this.toastrService.success('Your number is ' + resp.id);
+
+        this.translateService.get('Your number is')
+          .subscribe(perf => {
+            this.toastrService.success(perf + ' ' + resp.id);
+          });
+
+
+
         const message = new SocketMessage();
         message.task = resp;
         message.messageCode = MessageCode.TASK_ADDED;
@@ -78,8 +105,6 @@ export class TasksComponent implements OnInit, OnDestroy {
         message.sender = 'anonymous';
         this.socketService.sendMessage(message);
       });
-    } else {
-      this.toastrService.error('Error in form! Please rewrite form again!');
     }
   }
 

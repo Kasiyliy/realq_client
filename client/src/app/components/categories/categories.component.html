@@ -1,15 +1,15 @@
 <div class="grid-container">
-  <h1 class="mat-h1">Categories</h1>
+  <h1 class="mat-h1">{{'Categories' | translate}}</h1>
   <div class="container">
     <form class="container" [formGroup]="categoryForm">
       <mat-form-field>
-        <input matInput placeholder="Name" formControlName="name">
+        <input matInput placeholder="{{'Name' | translate}}" formControlName="name">
       </mat-form-field>
 
       <button [disabled]="!categoryForm.valid" (click)="save()"
               [ngClass]="{'disabled' : !categoryForm.valid}"
               mat-flat-button color="primary">
-        Save
+        {{'Save' | translate}}
       </button>
     </form>
 
@@ -20,12 +20,12 @@
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{'Name' | translate}}</mat-header-cell>
         <mat-cell *matCellDef="let category"> {{category.name}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{'Actions' | translate}}</mat-header-cell>
         <mat-cell *matCellDef="let category">
           <button mat-flat-button class="danger" (click)="delete(category)">
             <mat-icon>delete</mat-icon>

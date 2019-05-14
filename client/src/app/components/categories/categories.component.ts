@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Categories} from '../../models/categories';
 import {CategoryService} from '../../services/categories/category.service';
-import {Observable, of} from 'rxjs';
-import {MatTableDataSource, MatTableModule, MatDialog} from '@angular/material';
+import {of} from 'rxjs';
+import {MatDialog, MatTableDataSource} from '@angular/material';
 import {CategoryEditComponent} from './category-edit/category-edit.component';
 import {ToastrService} from 'ngx-toastr';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -23,7 +23,10 @@ export class CategoriesComponent implements OnInit {
   categories: Categories[] = [];
   displayedColumns = ['id', 'name', 'actions'];
 
-  constructor(private builder: FormBuilder, private categoryService: CategoryService, public dialog: MatDialog,
+  constructor(private builder: FormBuilder,
+              private categoryService: CategoryService,
+              public dialog: MatDialog,
+              private translateService: TranslateService,
               private toastrService: ToastrService) {
     this.categoryForm = this.builder.group({
       name: [null, Validators.required],
@@ -52,7 +55,12 @@ export class CategoriesComponent implements OnInit {
         this.dataSource = new MatTableDataSource<Categories>(this.categories);
       });
     }, err => {
-      this.toastrService.warning('Data not fetched');
+
+      this.translateService.get('Data not fetched!')
+        .subscribe(perf => {
+          this.toastrService.warning(perf);
+        });
+
       console.log(err);
     });
   }
@@ -64,10 +72,20 @@ export class CategoriesComponent implements OnInit {
       this.categoryForm.reset();
       category = resp;
       this.categories.unshift(category);
-      this.toastrService.success('Category saved!');
+
+      this.translateService.get('Element created!')
+        .subscribe(perf => {
+          this.toastrService.success(perf);
+        });
+
       this.dataSource.data = this.categories;
     }, err => {
-      this.toastrService.warning('Data not fetched');
+
+      this.translateService.get('Data not fetched!')
+        .subscribe(perf => {
+          this.toastrService.warning(perf);
+        });
+
       console.log(err);
     });
   }
@@ -76,9 +94,19 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.delete(category).toPromise().then(resp => {
       this.categories = this.categories.filter(c => c !== category);
       this.dataSource.data = this.categories;
-      this.toastrService.success('Category deleted!');
+
+      this.translateService.get('Element deleted!')
+        .subscribe(perf => {
+          this.toastrService.success(perf);
+        });
+
     }, error => {
-      this.toastrService.error('Error happened! Report to administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
       console.log(error);
     });
   }

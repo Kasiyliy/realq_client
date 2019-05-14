@@ -6,6 +6,7 @@ import {SocketService} from '../../services/socket/socket.service';
 import {SocketMessage} from '../../models/socket-message';
 import {MessageCode} from '../../models/enums/message-code.enum';
 import {OnEventReceived} from '../../services/socket/on-event-received';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-workers-control',
@@ -16,7 +17,11 @@ export class WorkersControlComponent implements OnInit, OnDestroy, OnEventReceiv
 
   workers: Workers[];
 
-  constructor(private workersService: WorkersService, private toastrService: ToastrService, private socketService: SocketService) {
+  constructor(private workersService: WorkersService,
+              private toastrService: ToastrService,
+              private socketService: SocketService,
+              private translateService: TranslateService
+  ) {
 
   }
 
@@ -66,7 +71,12 @@ export class WorkersControlComponent implements OnInit, OnDestroy, OnEventReceiv
       this.workers = perf;
     }, err => {
       console.log(err);
-      this.toastrService.error('Error occured! Report to system administrator!');
+
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
+
     });
   }
 

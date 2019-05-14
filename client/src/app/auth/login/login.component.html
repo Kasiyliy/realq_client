@@ -1,7 +1,6 @@
-
 <mat-card style="margin: 100px auto;">
   <mat-card-header>
-    <mat-card-title>Login</mat-card-title>
+    <mat-card-title>{{ 'Login' | translate}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <form class="container" [formGroup]="authForm">
@@ -9,13 +8,13 @@
         <tr>
           <td>
             <mat-form-field class="full">
-              <input matInput placeholder="Login" formControlName="login" name="login" required>
+              <input matInput placeholder="{{ 'Username' | translate}}" formControlName="login" name="login" required>
             </mat-form-field>
           </td>
         </tr>
         <tr>
           <td><mat-form-field class="full">
-            <input matInput placeholder="Password" formControlName="password" type="password" name="password" required>
+            <input matInput placeholder="{{ 'Password' | translate}}" formControlName="password" type="password" name="password" required>
           </mat-form-field></td>
         </tr></table>
     </form>
@@ -23,6 +22,6 @@
   <mat-card-actions>
     <button  mat-raised-button [disabled]="!authForm.valid"
              [ngClass]="{'disabled' : !authForm.valid}"
-             mat-flat-button color="primary" (click)="login()" color="primary">Login</button >
+             mat-flat-button (click)="login()" color="primary">{{ 'Login' | translate}}</button >
   </mat-card-actions>
 </mat-card>

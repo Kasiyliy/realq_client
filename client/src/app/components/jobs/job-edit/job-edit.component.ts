@@ -1,12 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {MatTableDataSource, MatTableModule, MatDialog} from '@angular/material';
-import {FormGroup, FormBuilder, FormsModule, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
 import {JobService} from '../../../services/jobs/job.service';
 import {Jobs} from '../../../models/jobs';
 import {CategoryService} from '../../../services/categories/category.service';
 import {Categories} from '../../../models/categories';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-job-edit',
@@ -19,8 +19,13 @@ export class JobEditComponent implements OnInit {
   categories: Categories[];
 
   constructor(public dialogRef: MatDialogRef<JobEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public job: Jobs, private builder: FormBuilder,
-              private jobService: JobService, private categoryService: CategoryService, private toastrService: ToastrService) {
+              @Inject(MAT_DIALOG_DATA) public job: Jobs,
+              private builder: FormBuilder,
+              private jobService: JobService,
+              private categoryService: CategoryService,
+              private toastrService: ToastrService,
+              private translateService: TranslateService
+              ) {
   }
 
   ngOnInit(): void {
@@ -47,15 +52,19 @@ export class JobEditComponent implements OnInit {
 
   update() {
     this.job.name = this.jobEditForm.get('name').value;
-    this.job.category = this.categories.find(c => c.id === parseInt(this.jobEditForm.get('category').value, 10 ));
+    this.job.category = this.categories.find(c => c.id === parseInt(this.jobEditForm.get('category').value, 10));
     this.jobService.update(this.job).toPromise().then(resp => {
       this.dialogRef.close();
-      this.toastrService.success('Job updated!');
+      this.translateService.get('Element updated!')
+        .subscribe(perf => {
+          this.toastrService.success(perf);
+        });
     }, error => {
       console.log(error);
-      this.toastrService.error('Error happened! Report to administrator!');
+      this.translateService.get('Error happened! Report to system administrator!')
+        .subscribe(perf => {
+          this.toastrService.error(perf);
+        });
     });
   }
-
-
 }
