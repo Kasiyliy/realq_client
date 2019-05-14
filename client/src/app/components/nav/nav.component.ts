@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {MatMenuTrigger, MatSidenavModule} from '@angular/material';
 import {AuthService} from '../../services/auth/auth.service';
-import {Router} from '@angular/router';
 import {Roles} from '../../models/roles';
 import {TranslateService} from '@ngx-translate/core';
 
