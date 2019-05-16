@@ -1,14 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {Breakpoints, BreakpointObserver} from '@angular/cdk/layout';
-import {FormBuilder, FormGroup, FormsModule, Validators} from '@angular/forms';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {JobService} from '../../services/jobs/job.service';
 import {CategoryService} from '../../services/categories/category.service';
 import {Categories} from '../../models/categories';
 import {Jobs} from '../../models/jobs';
 import {ToastrService} from 'ngx-toastr';
-import {MatTableDataSource, MatTableModule, MatDialog} from '@angular/material';
+import {MatDialog, MatTableDataSource} from '@angular/material';
 import {JobEditComponent} from './job-edit/job-edit.component';
-import {TranslateService} from "@ngx-translate/core";
+import {TranslateService} from '@ngx-translate/core';
+import {ImagesService} from '../../services/images/images.service';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-jobs',
@@ -18,21 +20,24 @@ import {TranslateService} from "@ngx-translate/core";
 export class JobsComponent implements OnInit {
 
   job: Jobs;
-
+  fullUrl = environment.apiUrl  + 'api/images/';
   categories: Categories[] = [];
   jobs: Jobs[] = [];
   jobForm: FormGroup;
+
+  files;
 
 
   dataSource: MatTableDataSource<Jobs>;
   displayedColumns = ['id', 'name', 'category', 'actions'];
 
   constructor(private breakpointObserver: BreakpointObserver,
-              private builder: FormBuilder,
-              private jobService: JobService,
               private translateService: TranslateService,
               private categoryService: CategoryService,
               private toastrService: ToastrService,
+              private imagesService: ImagesService,
+              private jobService: JobService,
+              private builder: FormBuilder,
               private dialog: MatDialog) {
 
   }
@@ -83,11 +88,30 @@ export class JobsComponent implements OnInit {
     });
   }
 
+  uploadFile($event) {
+    if ($event.target.files.length > 0) {
+      this.files = $event.target.files[0];
+    } else {
+      this.files = null;
+    }
+  }
+
   public save() {
     const job = new Jobs();
     job.name = this.jobForm.get('name').value;
     job.category = this.categories.find(c => c.id === parseInt(this.jobForm.get('category').value, 10));
     this.jobService.save(job).toPromise().then(resp => {
+
+      if (this.files) {
+        const formData = new FormData();
+        formData.append('file', this.files);
+        formData.append('jobId', resp.id + '');
+        console.log(resp);
+        this.imagesService.save(formData).subscribe(perf => {
+          this.toastrService.success('Image uploaded!');
+        });
+      }
+
       this.jobs.unshift(resp);
 
       this.translateService.get('Element created!')

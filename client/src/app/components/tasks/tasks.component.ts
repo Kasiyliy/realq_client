@@ -11,6 +11,7 @@ import {SocketService} from '../../services/socket/socket.service';
 import {SocketMessage} from '../../models/socket-message';
 import {MessageCode} from '../../models/enums/message-code.enum';
 import {TranslateService} from '@ngx-translate/core';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-tasks',
@@ -34,6 +35,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   iinSelectForm: FormGroup;
   jobSelectForm: FormGroup;
 
+  fullUrl = environment.apiUrl  + 'api/images/';
   ngOnInit() {
     this.iinSelectForm = this.builder.group({
       iin: ['', [Validators.required, Validators.pattern('^[0-9]{12}$')]]
