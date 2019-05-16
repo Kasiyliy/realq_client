@@ -15,12 +15,13 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-    const result = this.authService.checkAvailability();
-    if (!result) {
+    const available = this.authService.checkAvailability();
+    if (!available) {
       this.router.navigateByUrl('auth');
+      return false;
     }
 
-    return result;
+    return true;
   }
 
 }

@@ -1,5 +1,6 @@
 <div class="grid-container">
   <h1 class="mat-h1">{{'Categories' | translate}}</h1>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
   <div class="container">
     <form class="container" [formGroup]="categoryForm">
       <mat-form-field>
@@ -13,7 +14,7 @@
       </button>
     </form>
 
-    <table mat-table [dataSource]="dataSource" class="container">
+    <table *ngIf="!loading" mat-table [dataSource]="dataSource" class="container">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef> id</mat-header-cell>
         <mat-cell *matCellDef="let category"> {{category.id}} </mat-cell>

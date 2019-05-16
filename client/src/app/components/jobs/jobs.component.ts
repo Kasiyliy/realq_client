@@ -11,6 +11,7 @@ import {JobEditComponent} from './job-edit/job-edit.component';
 import {TranslateService} from '@ngx-translate/core';
 import {ImagesService} from '../../services/images/images.service';
 import {environment} from '../../../environments/environment';
+import {mergeMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-jobs',
@@ -20,13 +21,13 @@ import {environment} from '../../../environments/environment';
 export class JobsComponent implements OnInit {
 
   job: Jobs;
-  fullUrl = environment.apiUrl  + 'api/images/';
+  fullUrl = environment.apiUrl + 'api/images/';
   categories: Categories[] = [];
   jobs: Jobs[] = [];
   jobForm: FormGroup;
 
   files;
-
+  loading = false;
 
   dataSource: MatTableDataSource<Jobs>;
   displayedColumns = ['id', 'name', 'category', 'actions'];
@@ -64,27 +65,25 @@ export class JobsComponent implements OnInit {
   }
 
   public getAll() {
-    this.categoryService.getAll().subscribe(resp => {
-      this.categories = resp;
-    }, error => {
-      this.translateService.get('Error happened! Report to system administrator!')
-        .subscribe(perf => {
-          this.toastrService.error(perf);
-        });
-      console.log(error);
-    });
+    this.loading = true;
+    this.categoryService.getAll().pipe(mergeMap(
+      (resp) => {
+        this.categories = resp;
+        return this.jobService.getAll();
+      })
+    ).subscribe(resp => {
 
-    this.jobService.getAll().subscribe(resp => {
       this.jobs = resp;
       this.dataSource = new MatTableDataSource<Jobs>(resp);
-    }, error => {
+      this.loading = false;
 
+    }, err => {
       this.translateService.get('Error happened! Report to system administrator!')
         .subscribe(perf => {
           this.toastrService.error(perf);
         });
-
-      console.log(error);
+      console.log(err);
+      this.loading = false;
     });
   }
 
@@ -97,6 +96,7 @@ export class JobsComponent implements OnInit {
   }
 
   public save() {
+    this.loading = true;
     const job = new Jobs();
     job.name = this.jobForm.get('name').value;
     job.category = this.categories.find(c => c.id === parseInt(this.jobForm.get('category').value, 10));
@@ -109,6 +109,7 @@ export class JobsComponent implements OnInit {
         console.log(resp);
         this.imagesService.save(formData).subscribe(perf => {
           this.toastrService.success('Image uploaded!');
+          this.files = null;
         });
       }
 
@@ -121,29 +122,32 @@ export class JobsComponent implements OnInit {
 
       this.dataSource.data = this.jobs;
       this.jobForm.reset();
+      this.loading = false;
     }, error => {
       console.log(error);
 
       this.translateService.get('Error happened! Report to system administrator!')
         .subscribe(perf => {
           this.toastrService.error(perf);
+          this.loading = false;
         });
     });
 
   }
 
   public delete(job: Jobs) {
+    this.loading = true;
     this.jobService.delete(job).toPromise().then(resp => {
       this.jobs = this.jobs.filter(c => c !== job);
+      this.loading = false;
       this.dataSource.data = this.jobs;
-
       this.translateService.get('Element deleted!')
         .subscribe(perf => {
           this.toastrService.success(perf);
         });
 
     }, error => {
-
+      this.loading = false;
       this.translateService.get('Error happened! Report to system administrator!')
         .subscribe(perf => {
           this.toastrService.error(perf);

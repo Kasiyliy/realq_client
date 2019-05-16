@@ -11,10 +11,6 @@
     </mat-toolbar>
 
     <mat-nav-list>
-
-
-
-
       <div *ngIf="(this.authService.authorized.value); then  thenBlock else elseBlock"></div>
       <ng-template #thenBlock>
 

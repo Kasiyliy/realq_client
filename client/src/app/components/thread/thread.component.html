@@ -1,12 +1,13 @@
 <form [formGroup]="sendMessageForm">
   <mat-card>
     <mat-card-content>
-      <mat-grid-list cols="4" rowHeight="3:1" gutterSize="30px">
+      <mat-grid-list  [cols]="breakpoint"  rowHeight="2:1" gutterSize="20px" (window:resize)="onResize($event)">
         <mat-grid-tile [ngStyle]="{'background-color' : (!task.worker) ? 'grey' : 'rgb(123,220,123)'} "
                        style="color: white; font-size: 100%; text-align: center;" *ngFor="let task of tasks">
 
           <ng-template [ngIf]="!task.worker">
-            {{task.id}} = {{task.iin}} = {{task.job.name}}
+             IIN: {{task.iin}} = {{task.job.name}}
+            <br>ID: {{task.id}}
           </ng-template>
 
           <ng-template [ngIf]="task.worker">

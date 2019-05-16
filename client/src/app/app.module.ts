@@ -23,7 +23,7 @@ import {
   MatIconModule,
   MatListModule,
   MatMenuModule,
-  MatSortModule,
+  MatSortModule, MatProgressBarModule,
 } from '@angular/material';
 import {
   HTTP_INTERCEPTORS,
@@ -80,6 +80,7 @@ export class AccountTranslationLoader implements TranslateLoader {
   imports: [
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
+    MatProgressBarModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatPaginatorModule,

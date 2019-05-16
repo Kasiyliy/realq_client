@@ -23,6 +23,8 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
   ) {
+    this.authorized.next(this.checkAvailability());
+    this.role.next(this.getRole());
   }
 
 

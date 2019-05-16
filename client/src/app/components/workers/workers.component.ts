@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {Jobs} from '../../models/jobs';
-import {FormBuilder, FormGroup, Validators, FormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Workers} from '../../models/workers';
 import {MatDialog, MatTableDataSource} from '@angular/material';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {JobService} from '../../services/jobs/job.service';
-import {CategoryService} from '../../services/categories/category.service';
 import {ToastrService} from 'ngx-toastr';
 import {TasksService} from '../../services/tasks/tasks.service';
 import {WorkersService} from '../../services/workers/workers.service';
 import {WorkerEditComponent} from './worker-edit/worker-edit.component';
 import {TranslateService} from '@ngx-translate/core';
+import {mergeMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-workers',
@@ -27,7 +27,7 @@ export class WorkersComponent implements OnInit {
 
   dataSource: MatTableDataSource<Workers>;
   displayedColumns = ['id', 'name', 'login', 'jobs', 'actions'];
-
+  loading = false;
   constructor(private breakpointObserver: BreakpointObserver,
               private builder: FormBuilder,
               private jobService: JobService,
@@ -63,33 +63,28 @@ export class WorkersComponent implements OnInit {
   }
 
   public getAll() {
-    this.jobService.getAll().subscribe(resp => {
-      this.jobs = resp;
-    }, error => {
-
-      this.translateService.get('Error happened! Report to system administrator!')
-        .subscribe(perf => {
-          this.toastrService.error(perf);
-        });
-
-      console.log(error);
-    });
-
-    this.workerService.getAll().subscribe(resp => {
+    this.loading = true;
+    this.jobService.getAll().pipe(
+      mergeMap(perf => {
+        this.jobs = perf;
+        return this.workerService.getAll();
+      })
+    ).subscribe(resp => {
       this.workers = resp;
       this.dataSource = new MatTableDataSource<Workers>(resp);
+      this.loading = false;
     }, error => {
-
       this.translateService.get('Error happened! Report to system administrator!')
         .subscribe(perf => {
           this.toastrService.error(perf);
         });
-
+      this.loading = false;
       console.log(error);
     });
   }
 
   public save() {
+    this.loading = true;
     const worker = new Workers();
     worker.login = this.workerForm.get('login').value;
     worker.name = this.workerForm.get('name').value;
@@ -106,6 +101,7 @@ export class WorkersComponent implements OnInit {
 
       this.dataSource.data = this.workers;
       this.workerForm.reset();
+      this.loading = false;
     }, error => {
 
       this.translateService.get('Error happened! Report to system administrator!')
@@ -114,11 +110,13 @@ export class WorkersComponent implements OnInit {
         });
 
       console.log(error);
+      this.loading = false;
     });
   }
 
 
   public delete(worker: Workers) {
+    this.loading = true;
     this.workerService.delete(worker).toPromise().then(resp => {
       this.workers = this.workers.filter(c => c !== worker);
       this.dataSource.data = this.workers;
@@ -127,7 +125,7 @@ export class WorkersComponent implements OnInit {
         .subscribe(perf => {
           this.toastrService.success(perf);
         });
-
+      this.loading = false;
 
     }, error => {
 
@@ -137,6 +135,7 @@ export class WorkersComponent implements OnInit {
         });
 
       console.log(error);
+      this.loading = false;
     });
   }
 

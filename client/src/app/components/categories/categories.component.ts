@@ -22,7 +22,7 @@ export class CategoriesComponent implements OnInit {
   dataSource: MatTableDataSource<Categories>;
   categories: Categories[] = [];
   displayedColumns = ['id', 'name', 'actions'];
-
+  loading = false;
   constructor(private builder: FormBuilder,
               private categoryService: CategoryService,
               public dialog: MatDialog,
@@ -49,10 +49,12 @@ export class CategoriesComponent implements OnInit {
   }
 
   public getAll() {
+    this.loading = true;
     this.categoryService.getAll().toPromise().then(resp => {
       of(resp).subscribe(categories => {
         this.categories = categories;
         this.dataSource = new MatTableDataSource<Categories>(this.categories);
+        this.loading = false;
       });
     }, err => {
 
@@ -60,12 +62,13 @@ export class CategoriesComponent implements OnInit {
         .subscribe(perf => {
           this.toastrService.warning(perf);
         });
-
+      this.loading = false;
       console.log(err);
     });
   }
 
   public save() {
+    this.loading = true;
     let category = new Categories();
     category.name = this.categoryForm.get('name').value;
     this.categoryService.save(category).toPromise().then(resp => {
@@ -79,6 +82,7 @@ export class CategoriesComponent implements OnInit {
         });
 
       this.dataSource.data = this.categories;
+      this.loading = false;
     }, err => {
 
       this.translateService.get('Data not fetched!')
@@ -87,10 +91,12 @@ export class CategoriesComponent implements OnInit {
         });
 
       console.log(err);
+      this.loading = false;
     });
   }
 
   public delete(category: Categories) {
+    this.loading = true;
     this.categoryService.delete(category).toPromise().then(resp => {
       this.categories = this.categories.filter(c => c !== category);
       this.dataSource.data = this.categories;
@@ -99,7 +105,7 @@ export class CategoriesComponent implements OnInit {
         .subscribe(perf => {
           this.toastrService.success(perf);
         });
-
+      this.loading = false;
     }, error => {
 
       this.translateService.get('Error happened! Report to system administrator!')
@@ -108,6 +114,7 @@ export class CategoriesComponent implements OnInit {
         });
 
       console.log(error);
+      this.loading = false;
     });
   }
 

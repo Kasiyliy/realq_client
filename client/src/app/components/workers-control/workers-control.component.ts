@@ -16,6 +16,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class WorkersControlComponent implements OnInit, OnDestroy, OnEventReceived {
 
   workers: Workers[];
+  breakpoint: number;
 
   constructor(private workersService: WorkersService,
               private toastrService: ToastrService,
@@ -55,13 +56,6 @@ export class WorkersControlComponent implements OnInit, OnDestroy, OnEventReceiv
           }
         });
       }
-
-
-      // this.workers.forEach((w) => {
-      //   if (w.task != null) {
-      //     this.search(w);
-      //   }
-      // });
     }
   }
 
@@ -69,6 +63,7 @@ export class WorkersControlComponent implements OnInit, OnDestroy, OnEventReceiv
   getAll() {
     this.workersService.getAllManagers().subscribe(perf => {
       this.workers = perf;
+      this.resizeFirst();
     }, err => {
       console.log(err);
 
@@ -110,4 +105,19 @@ export class WorkersControlComponent implements OnInit, OnDestroy, OnEventReceiv
   }
 
 
+  resizeFirst() {
+    if (window.innerWidth > 600) {
+      this.breakpoint = Math.ceil(this.workers.length / 2);
+    } else {
+      this.breakpoint = 1;
+    }
+  }
+
+  resize($event) {
+    if ($event.target.innerWidth > 600) {
+      this.breakpoint = Math.ceil(this.workers.length / 2);
+    } else {
+      this.breakpoint = 1;
+    }
+  }
 }

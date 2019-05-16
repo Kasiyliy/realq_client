@@ -24,7 +24,7 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
   private stompClient: Stomp;
   private serverSendUrl = `/app/socket`;
   private serverListenUrl = `/thread/messages`;
-
+  breakpoint: number;
   tasks: Tasks[] = [];
 
   constructor(private builder: FormBuilder,
@@ -35,6 +35,8 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.resize(window.innerWidth);
 
     this.socketService.initializeWebSocketConnection(this);
 
@@ -53,7 +55,7 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
         this.tasks.forEach((task) => {
           if (task.id === socketMessage.worker.task.id) {
             task.worker = socketMessage.worker;
-            this.voice('Ожидающий с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name );
+            this.voice('Ожидающий с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name);
           }
         });
         console.log('TASK_TAKEN!');
@@ -75,7 +77,7 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
         this.tasks.forEach((task) => {
           if (task.id === socketMessage.worker.task.id) {
             task.worker = socketMessage.worker;
-            this.voice('Ожидающий с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name );
+            this.voice('Ожидающий с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name);
           }
         });
         console.log('TASK_ADDED_TASK_TAKEN!');
@@ -121,6 +123,26 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
 
       console.log(err);
     });
+  }
+
+  resize(width) {
+    if (width < 400) {
+      this.breakpoint = 1;
+    } else if (width >= 400 && width < 600) {
+      this.breakpoint = 2;
+    } else if (width >= 600 && width < 800) {
+      this.breakpoint = 3;
+    } else if (width >= 800 && width < 1000) {
+      this.breakpoint = 4;
+    } else if (width >= 1000 && width < 1200) {
+      this.breakpoint = 5;
+    } else {
+      this.breakpoint = 6;
+    }
+  }
+
+  onResize(event) {
+    this.resize(event.target.innerWidth);
   }
 
   ngOnDestroy(): void {
