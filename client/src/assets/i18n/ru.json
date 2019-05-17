@@ -43,5 +43,8 @@
   "Individual identification number" : "Индивидуальный идентификационный номер",
   "Fill out your Individual Identification Number" : "Введите ваш индивидуальный идентификационный номер(ИИН)",
   "Error happened! Report to administrator!" : "Произошла ошибка! Просим вас обратиться к администрации!",
-  "Welcome" : "Добро пожаловать!"
+  "Welcome" : "Добро пожаловать!",
+  "Waiter" : "Ожидающий",
+  "Goes to" : "пройдите к ",
+  "waiting" : "в ожидании"
 }

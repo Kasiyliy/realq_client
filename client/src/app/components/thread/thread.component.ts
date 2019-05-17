@@ -55,7 +55,7 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
         this.tasks.forEach((task) => {
           if (task.id === socketMessage.worker.task.id) {
             task.worker = socketMessage.worker;
-            this.voice('Ожидающий с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name);
+            this.voice('Ожидающий салем с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name);
           }
         });
         console.log('TASK_TAKEN!');

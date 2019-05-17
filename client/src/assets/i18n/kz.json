@@ -43,5 +43,8 @@
   "Individual identification number" : "Жеке сәйкестендіру нөмірі",
   "Fill out your Individual Identification Number" : "Жеке сәйкестендіру нөміріңізді(ЖСН) еңгізіңіз",
   "Error happened! Report to administrator!" : "Қате! Әкімшілікке хабарласуыңызды өтінеміз!",
-  "Welcome" : "Қош келдіңіз!"
+  "Welcome" : "Қош келдіңіз!",
+  "Waiter" : "Күтуші",
+  "Goes to" : "сізге бару керек - ",
+  "waiting" : "күтуде"
 }

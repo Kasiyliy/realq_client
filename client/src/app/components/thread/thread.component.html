@@ -6,12 +6,11 @@
                        style="color: white; font-size: 100%; text-align: center;" *ngFor="let task of tasks">
 
           <ng-template [ngIf]="!task.worker">
-             IIN: {{task.iin}} = {{task.job.name}}
-            <br>ID: {{task.id}}
+            {{ 'Waiter'|translate }}: {{task.id}} - {{'waiting' | translate}}
           </ng-template>
 
           <ng-template [ngIf]="task.worker">
-            {{task.id}} = {{task.iin}} = {{task.job.name}} => {{task.worker.login}} : {{task.worker.name}}
+            {{ 'Waiter'|translate }}: {{task.id}} {{'Goes to' | translate}} {{task.worker.login}} : {{task.worker.name}}
           </ng-template>
           
         </mat-grid-tile>
