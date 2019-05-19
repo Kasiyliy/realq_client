@@ -1,6 +1,13 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~material-icons/iconfont/material-icons.css';
 
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+
 .container {
   display: flex;
   flex-direction: column;

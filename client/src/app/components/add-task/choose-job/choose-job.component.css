@@ -1,0 +1,32 @@
+.container {
+  padding: 100px 20px;
+}
+
+.myButton {
+  float: left;
+  margin: 15px;
+}
+
+
+.image{
+  height: 150px; /* adjust as needed */
+  object-fit: contain;
+}
+
+
+.mat-h1 {
+  margin-top: 20px;
+}
+
+
+.mat-typography {
+  color: white;
+}
+
+.example-card {
+  max-width: 400px;
+}
+
+.example-card:hover {
+  background-color: #eeeeee;
+}

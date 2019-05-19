@@ -1,0 +1,20 @@
+.categoryDiv {
+  margin: 10px;
+  text-align: center;
+  background-color: #3f51b5;
+  padding: 20px;
+  color: white;
+}
+
+.categoryDiv:hover {
+  background-color: rgb(191, 4, 60);
+}
+
+.container {
+  padding: 100px 20px;
+}
+
+
+.mat-h1 {
+  margin-top: 20px;
+}

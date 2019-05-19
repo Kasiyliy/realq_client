@@ -55,7 +55,7 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
         this.tasks.forEach((task) => {
           if (task.id === socketMessage.worker.task.id) {
             task.worker = socketMessage.worker;
-            this.voice('Ожидающий салем с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name);
+            this.voiceAdapter(task.id, task.worker.name);
           }
         });
         console.log('TASK_TAKEN!');
@@ -77,7 +77,7 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
         this.tasks.forEach((task) => {
           if (task.id === socketMessage.worker.task.id) {
             task.worker = socketMessage.worker;
-            this.voice('Ожидающий с номером ' + task.id + ' идет к обслуживающему ' + task.worker.name);
+            this.voiceAdapter(task.id, task.worker.name);
           }
         });
         console.log('TASK_ADDED_TASK_TAKEN!');
@@ -91,8 +91,18 @@ export class ThreadComponent implements OnInit, OnEventReceived, OnDestroy {
 
   }
 
-  voice(text) {
+  voiceAdapter(id, name) {
+    this.toastrService.info(this.translateService.defaultLang);
+    this.voice('Ожидающий с номером ' + id + ' идет к обслуживающему ' + name, false);
+  }
+
+  voice(text, isEn) {
     const msg = new SpeechSynthesisUtterance(text);
+    if (isEn) {
+      msg.lang = 'en-US';
+    } else {
+      msg.lang = 'ru-RU';
+    }
     window.speechSynthesis.speak(msg);
   }
 

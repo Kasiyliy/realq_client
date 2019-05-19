@@ -5,31 +5,28 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MAT_LABEL_GLOBAL_OPTIONS,
-  MatProgressSpinnerModule,
-  MatPaginatorModule,
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDialogModule,
   MatFormFieldModule,
   MatGridListModule,
-  MatCheckboxModule,
-  MatToolbarModule,
-  MatSidenavModule,
-  MatStepperModule,
-  MatDialogModule,
-  MatSelectModule,
-  MatButtonModule,
-  MatInputModule,
-  MatChipsModule,
-  MatTableModule,
-  MatCardModule,
   MatIconModule,
+  MatInputModule,
   MatListModule,
   MatMenuModule,
-  MatSortModule, MatProgressBarModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
+  MatToolbarModule,
 } from '@angular/material';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-  HttpClient,
-} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule,} from '@angular/common/http';
 
 import {CategoryEditComponent} from './components/categories/category-edit/category-edit.component';
 import {PageNotFoundComponent} from './components/errors/page-not-found/page-not-found.component';
@@ -40,6 +37,7 @@ import {JobEditComponent} from './components/jobs/job-edit/job-edit.component';
 import {WorkersComponent} from './components/workers/workers.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {ThreadComponent} from './components/thread/thread.component';
+import {AddTaskModule} from './components/add-task/add-task.module';
 import {TasksComponent} from './components/tasks/tasks.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
@@ -51,11 +49,13 @@ import {LayoutModule} from '@angular/cdk/layout';
 import {CommonModule} from '@angular/common';
 import {ToastrModule} from 'ngx-toastr';
 import {Observable} from 'rxjs';
+import {EnterIINComponent} from "./components/add-task/enter-iin/enter-iin.component";
 
 
 export class AccountTranslationLoader implements TranslateLoader {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getTranslation(lang: string): Observable<any> {
     return this.http.get(`./assets/i18n/${lang}.json`);
@@ -87,6 +87,7 @@ export class AccountTranslationLoader implements TranslateLoader {
     MatGridListModule,
     MatCheckboxModule,
     AppRoutingModule,
+    AppRoutingModule,
     MatSidenavModule,
     MatToolbarModule,
     HttpClientModule,
@@ -97,12 +98,14 @@ export class AccountTranslationLoader implements TranslateLoader {
     MatInputModule,
     MatChipsModule,
     MatTableModule,
+    AddTaskModule,
     MatSortModule,
     BrowserModule,
     MatListModule,
     MatIconModule,
     MatCardModule,
     MatMenuModule,
+    AddTaskModule,
     LayoutModule,
     FormsModule,
     CommonModule,
@@ -125,7 +128,7 @@ export class AccountTranslationLoader implements TranslateLoader {
   exports: [
     MatButtonModule,
   ],
-  entryComponents: [CategoryEditComponent, JobEditComponent, WorkerEditComponent],
+  entryComponents: [CategoryEditComponent, JobEditComponent, WorkerEditComponent, EnterIINComponent],
   providers: [
     HttpClient,
     {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},

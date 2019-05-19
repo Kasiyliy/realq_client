@@ -11,7 +11,7 @@ import {SocketService} from '../../services/socket/socket.service';
 import {SocketMessage} from '../../models/socket-message';
 import {MessageCode} from '../../models/enums/message-code.enum';
 import {TranslateService} from '@ngx-translate/core';
-import {environment} from "../../../environments/environment";
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-tasks',

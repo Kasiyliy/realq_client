@@ -1,0 +1,11 @@
+<div [@routerTransition]>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <h1 class="mat-h1">{{'Choose category' | translate}}</h1>
+  <div class="container" *ngIf="!loading">
+    <div *ngFor="let category of categories" class="categoryDiv" [routerLink]="'/add-task/' + category.id">
+      <mat-label class="mat-typography" >
+        {{category.name}}
+      </mat-label>
+    </div>
+  </div>
+</div>

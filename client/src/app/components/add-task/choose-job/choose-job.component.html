@@ -1,0 +1,17 @@
+<div [@routerTransition]>
+  <button mat-flat-button color="primary" class="myButton" (click)="backClicked()">{{'Back' | translate}}</button>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <h1 class="mat-h1">{{'Select job' | translate}}</h1>
+  <div class="container" *ngIf="!loading">
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-tile *ngFor="let job of jobs">
+        <mat-card  class="example-card" (click)="openDialog(job)">
+          <mat-card-header>
+            <mat-card-title>{{job.name}}</mat-card-title>
+          </mat-card-header>
+          <img mat-card-image class="image" [src]="imageUrl + job.id" [alt]="job.name">
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>

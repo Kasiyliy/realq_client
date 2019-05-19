@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {JobsComponent} from './components/jobs/jobs.component';
 import {CategoriesComponent} from './components/categories/categories.component';
 import {WorkersComponent} from './components/workers/workers.component';
@@ -7,11 +7,8 @@ import {TasksComponent} from './components/tasks/tasks.component';
 import {ThreadComponent} from './components/thread/thread.component';
 import {WorkersControlComponent} from './components/workers-control/workers-control.component';
 import {PageNotFoundComponent} from './components/errors/page-not-found/page-not-found.component';
-import {NavComponent} from './components/nav/nav.component';
 import {AuthGuard} from './guards/auth/auth.guard';
 import {AdminGuard} from './guards/roles/admin.guard';
-import {ManagerGuard} from './guards/roles/manager.guard';
-import {GuestGuard} from './guards/roles/guest.guard';
 
 const routes: Routes = [
     {
@@ -45,6 +42,10 @@ const routes: Routes = [
     {
       path: 'auth',
       loadChildren: './auth/auth.module#AuthModule'
+    },
+    {
+      path: 'add-task',
+      loadChildren: './components/add-task/add-task.module#AddTaskModule'
     },
     {
       path: '',
