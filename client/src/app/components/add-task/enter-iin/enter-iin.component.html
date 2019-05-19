@@ -11,7 +11,7 @@
           <input matInput placeholder="{{'Individual identification number' | translate}}" formControlName="iin" required>
         </mat-form-field>
       </mat-card-content>
-      <div mat-dialog-actions class="float-right">
+      <div mat-dialog-actions class="float-right" style="margin-top: 5px">
         <button mat-button class="default" (click)="onNoClick()">{{'Cancel' |translate}}</button>
         <button class="success text-white" [disabled]="!iinSelectForm.valid" mat-button (click)="submitForm()"
         >{{'Save' | translate}}</button>
